@@ -2,51 +2,7 @@
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import React, { useState, useEffect, useRef } from "react";
-const TETextarea = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdown = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownToggle = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownMenu = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownItem = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TERipple = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEInput = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TECarousel = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TECarouselItem = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModal = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalDialog = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalContent = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalHeader = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalBody = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalFooter = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
+const Carousel = dynamic(() => import("./carousel"), { ssr: false });
 const listServicos = [
   { servico: "Decoração e Cenário", preco: "3.000.00" },
   { servico: "Noiva", preco: "3.000.00" },
@@ -144,46 +100,7 @@ export default function Inspiracao() {
             <div className="mt-4">
               {isSelected === "Todos Convites" ? (
                 <>
-                  <TECarousel showControls ride="carousel">
-                    <div className="relative w-full overflow-hidden after:clear-both after:block after:content-['']">
-                      <TECarouselItem
-                        itemID={1}
-                        className="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
-                      >
-                        <Image
-                          height={400}
-                          width={900}
-                          src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp"
-                          className="block w-full"
-                          alt="..."
-                        />
-                      </TECarouselItem>
-                      <TECarouselItem
-                        itemID={2}
-                        className="relative float-left hidden -mr-[100%] w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
-                      >
-                        <Image
-                          height={400}
-                          width={900}
-                          src="https://mdbcdn.b-cdn.net/img/new/slides/042.webp"
-                          className="block w-full"
-                          alt="..."
-                        />
-                      </TECarouselItem>
-                      <TECarouselItem
-                        itemID={3}
-                        className="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
-                      >
-                        <Image
-                          height={400}
-                          width={900}
-                          src="https://mdbcdn.b-cdn.net/img/new/slides/043.webp"
-                          className="block w-full"
-                          alt="..."
-                        />
-                      </TECarouselItem>
-                    </div>
-                  </TECarousel>
+                  <Carousel />
                 </>
               ) : (
                 <>

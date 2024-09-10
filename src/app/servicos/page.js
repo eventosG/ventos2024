@@ -1,52 +1,11 @@
 "use client";
+import { Dropdown } from "@nextui-org/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
-const TETextarea = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdown = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownToggle = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownMenu = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownItem = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TERipple = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEInput = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TECarousel = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TECarouselItem = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModal = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalDialog = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalContent = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalHeader = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalBody = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalFooter = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
+const Carousel = dynamic(() => import("./carousel"), { ssr: false });
+const DropDown = dynamic(() => import("./dropdown"), { ssr: false });
+const Input = dynamic(() => import("./input"), { ssr: false });
 const listServicos = [
   { servico: "Transporte", preco: "3.000.00" },
   { servico: "Garçom e Protocolo", preco: "3.000.00" },
@@ -138,16 +97,7 @@ export default function Servicos() {
                   {selectedProduct === "Preço" && (
                     <>
                       <div className="flex flex-row gap-4 w-80">
-                        <TEInput
-                          type="number"
-                          id="exampleFormControlInput1"
-                          label="Minimo"
-                        ></TEInput>
-                        <TEInput
-                          type="number"
-                          id="exampleFormControlInput1"
-                          label="Máximo"
-                        ></TEInput>
+                        <Input />
                         <div>
                           <button
                             onClick={() => setIsFiltroSelected((prev) => !prev)}
@@ -162,124 +112,14 @@ export default function Servicos() {
                   )}
                   {selectedProduct === "Categoria" && (
                     <>
-                      <TEDropdown>
-                        <TERipple>
-                          <TEDropdownToggle className="flex items-center whitespace-nowrap rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#fbfbfb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.3),0_4px_18px_0_rgba(251,251,251,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.3),0_4px_18px_0_rgba(251,251,251,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.3),0_4px_18px_0_rgba(251,251,251,0.2)] motion-reduce:transition-none">
-                            Categorias
-                            <span className="ml-2 [&>svg]:w-5 w-2">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </span>
-                          </TEDropdownToggle>
-                        </TERipple>
-                        <TEDropdownMenu>
-                          <TEDropdownItem>
-                            <a
-                              onClick={() =>
-                                setIsFiltroSelected((prev) => !prev)
-                              }
-                              href="#"
-                              className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                            >
-                              Categoria 1
-                            </a>
-                          </TEDropdownItem>
-                          <TEDropdownItem>
-                            <a
-                              onClick={() =>
-                                setIsFiltroSelected((prev) => !prev)
-                              }
-                              href="#"
-                              className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                            >
-                              Categoria 2
-                            </a>
-                          </TEDropdownItem>
-                          <TEDropdownItem>
-                            <a
-                              onClick={() =>
-                                setIsFiltroSelected((prev) => !prev)
-                              }
-                              href="#"
-                              className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                            >
-                              Categoria 3
-                            </a>
-                          </TEDropdownItem>
-                        </TEDropdownMenu>
-                      </TEDropdown>
+                      <DropDown />
                     </>
                   )}
                   {selectedProduct === "Classificação" && <></>}
                 </>
               ) : (
                 <>
-                  <TEDropdown>
-                    <TERipple>
-                      <TEDropdownToggle className="flex items-center whitespace-nowrap rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#fbfbfb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.3),0_4px_18px_0_rgba(251,251,251,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.3),0_4px_18px_0_rgba(251,251,251,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.3),0_4px_18px_0_rgba(251,251,251,0.2)] motion-reduce:transition-none">
-                        Filtrar Por
-                        <span className="ml-2 [&>svg]:w-5 w-2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </span>
-                      </TEDropdownToggle>
-                    </TERipple>
-                    <TEDropdownMenu>
-                      <TEDropdownItem>
-                        <a
-                          onClick={() => Preco()}
-                          href="#"
-                          className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                        >
-                          Preço
-                        </a>
-                      </TEDropdownItem>
-                      <TEDropdownItem>
-                        <a
-                          onClick={() => Categoria()}
-                          href="#"
-                          className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                        >
-                          Categoria
-                        </a>
-                      </TEDropdownItem>
-                      <TEDropdownItem>
-                        <a
-                          href="#"
-                          className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                        >
-                          Classificação
-                        </a>
-                      </TEDropdownItem>
-                      <TEDropdownItem>
-                        {/* Fazer filtro do preço, categoria e Classificação em simultaneo */}
-                        <a
-                          href="#"
-                          className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                        >
-                          Filtragem Multipla
-                        </a>
-                      </TEDropdownItem>
-                    </TEDropdownMenu>
-                  </TEDropdown>
+                  <DropDown />
                 </>
               )}
             </div>
@@ -298,46 +138,7 @@ export default function Servicos() {
             <div className="mt-4">
               {isSelected === "Todos Produtos" ? (
                 <>
-                  <TECarousel showControls ride="carousel">
-                    <div className="relative w-full overflow-hidden after:clear-both after:block after:content-['']">
-                      <TECarouselItem
-                        itemID={1}
-                        className="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
-                      >
-                        <Image
-                          height={400}
-                          width={900}
-                          src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp"
-                          className="block w-full"
-                          alt="..."
-                        />
-                      </TECarouselItem>
-                      <TECarouselItem
-                        itemID={2}
-                        className="relative float-left hidden -mr-[100%] w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
-                      >
-                        <Image
-                          height={400}
-                          width={900}
-                          src="https://mdbcdn.b-cdn.net/img/new/slides/042.webp"
-                          className="block w-full"
-                          alt="..."
-                        />
-                      </TECarouselItem>
-                      <TECarouselItem
-                        itemID={3}
-                        className="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
-                      >
-                        <Image
-                          height={400}
-                          width={900}
-                          src="https://mdbcdn.b-cdn.net/img/new/slides/043.webp"
-                          className="block w-full"
-                          alt="..."
-                        />
-                      </TECarouselItem>
-                    </div>
-                  </TECarousel>
+                  <Carousel />
                 </>
               ) : (
                 <>

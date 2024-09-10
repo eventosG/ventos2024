@@ -1,27 +1,9 @@
 "use client";
 import dynamic from "next/dynamic";
 import React, { useState, useEffect, useRef } from "react";
-const TEChart = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TETextarea = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdown = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownToggle = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownMenu = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownItem = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TERipple = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
+const Graficos = dynamic(() => import("./graficos"), { ssr: false });
+const TextArea = dynamic(() => import("./textArea"), { ssr: false });
+const DropDown = dynamic(() => import("./dropdown"), { ssr: false });
 var convidados = [
   "convidado 1",
   "convidado 2",
@@ -59,11 +41,7 @@ function Convidados() {
               <p className="mb-2">Escreva uma mensagem para o seu convidado</p>
               <div className="flex justify-center">
                 <div className="relative mb-3 w-full">
-                  <TETextarea
-                    id="textareaExample"
-                    label="Mensagem"
-                    rows={4}
-                  ></TETextarea>
+                  <TextArea />
                 </div>
               </div>
             </div>
@@ -286,29 +264,7 @@ function Convidados() {
                   <div className="col-span-2">
                     <div className="text-center">
                       <p className="font-bold">Presenças</p>
-                      <TEChart
-                        type="doughnut"
-                        data={{
-                          labels: [
-                            "Confirmados",
-                            "Pendentes",
-                            "Cancelado",
-                            "Recusado",
-                          ],
-                          datasets: [
-                            {
-                              label: "Traffic",
-                              data: [2112, 2343, 2545, 3423],
-                              backgroundColor: [
-                                "rgba(63, 81, 181, 0.5)",
-                                "rgba(77, 182, 172, 0.5)",
-                                "rgba(66, 133, 244, 0.5)",
-                                "rgba(233, 30, 99, 0.5)",
-                              ],
-                            },
-                          ],
-                        }}
-                      />
+                      <Graficos />
                     </div>
                   </div>
                 </div>
@@ -346,22 +302,7 @@ function Convidados() {
                   <div className="col-span-2">
                     <div className="text-center">
                       <p className="font-bold">Participação</p>
-                      <TEChart
-                        type="doughnut"
-                        data={{
-                          labels: ["Presencial", "Streaming"],
-                          datasets: [
-                            {
-                              label: "Traffic",
-                              data: [2112, 2343],
-                              backgroundColor: [
-                                "rgba(63, 81, 181, 0.5)",
-                                "rgba(77, 182, 172, 0.5)",
-                              ],
-                            },
-                          ],
-                        }}
-                      />
+                      <Graficos />
                     </div>
                   </div>
                 </div>
@@ -522,53 +463,7 @@ function Convidados() {
                                 </div>
                               </div>
                               <div className="w-24">
-                                <TEDropdown className="flex justify-center">
-                                  <TERipple rippleColor="light">
-                                    <TEDropdownToggle className="flex items-center whitespace-nowrap rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] motion-reduce:transition-none dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-                                      Dropdown button
-                                      <span className="ml-2 [&>svg]:w-5 w-2">
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          viewBox="0 0 20 20"
-                                          fill="currentColor"
-                                        >
-                                          <path
-                                            fillRule="evenodd"
-                                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                            clipRule="evenodd"
-                                          />
-                                        </svg>
-                                      </span>
-                                    </TEDropdownToggle>
-                                  </TERipple>
-
-                                  <TEDropdownMenu>
-                                    <TEDropdownItem>
-                                      <a
-                                        href="#"
-                                        className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                                      >
-                                        Action
-                                      </a>
-                                    </TEDropdownItem>
-                                    <TEDropdownItem>
-                                      <a
-                                        href="#"
-                                        className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                                      >
-                                        Another action
-                                      </a>
-                                    </TEDropdownItem>
-                                    <TEDropdownItem>
-                                      <a
-                                        href="#"
-                                        className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                                      >
-                                        Something else here
-                                      </a>
-                                    </TEDropdownItem>
-                                  </TEDropdownMenu>
-                                </TEDropdown>
+                                <DropDown />
                               </div>
                             </div>
                           </div>
@@ -980,45 +875,7 @@ function Convidados() {
                               </div>
                             </div>
                             <div className="w-24">
-                              <TEDropdown className="flex justify-center">
-                                <TERipple rippleColor="light">
-                                  <TEDropdownToggle className="flex items-center whitespace-nowrap rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-black transition duration-150 ease-in-out hover:bg-neutral-50">
-                                    Editar
-                                    <span className="ml-2 [&>svg]:w-5 w-2">
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                          clipRule="evenodd"
-                                        />
-                                      </svg>
-                                    </span>
-                                  </TEDropdownToggle>
-                                </TERipple>
-
-                                <TEDropdownMenu>
-                                  <TEDropdownItem>
-                                    <a
-                                      href="#"
-                                      className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                                    >
-                                      Mesas
-                                    </a>
-                                  </TEDropdownItem>
-                                  <TEDropdownItem>
-                                    <a
-                                      href="#"
-                                      className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-                                    >
-                                      Grupos
-                                    </a>
-                                  </TEDropdownItem>
-                                </TEDropdownMenu>
-                              </TEDropdown>
+                              <DropDown />
                             </div>
                           </div>
                         </div>

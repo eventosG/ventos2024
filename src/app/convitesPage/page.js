@@ -2,51 +2,8 @@
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import React, { useState, useEffect, useRef } from "react";
-const TETextarea = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdown = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownToggle = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownMenu = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEDropdownItem = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TERipple = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEInput = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TECarousel = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TECarouselItem = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModal = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalDialog = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalContent = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalHeader = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalBody = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
-const TEModalFooter = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
-);
+const ModelPP = dynamic(() => import("./model"), { ssr: false });
+const Input = dynamic(() => import("./input"), { ssr: false });
 export default function ConviteSelected() {
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -195,13 +152,7 @@ export default function ConviteSelected() {
                   <h3>Número de Convites:</h3>
                 </div>
                 <div className="w-1/3">
-                  <TEInput
-                    type="number"
-                    id="exampleFormControlInputNumber"
-                    label="Convites"
-                    max={10}
-                    min={1}
-                  ></TEInput>
+                  <Input />
                 </div>
               </div>
             </div>
@@ -212,13 +163,7 @@ export default function ConviteSelected() {
                     <h3>Número de Cartão de Instruções:</h3>
                   </div>
                   <div className="w-1/3">
-                    <TEInput
-                      type="number"
-                      id="exampleFormControlInputNumber"
-                      label="Instruções"
-                      max={10}
-                      min={1}
-                    ></TEInput>
+                    <Input />
                   </div>
                 </div>
               </div>
@@ -230,13 +175,7 @@ export default function ConviteSelected() {
                     <h3>Número de Cartão de Recepção:</h3>
                   </div>
                   <div className="w-1/3">
-                    <TEInput
-                      type="number"
-                      id="exampleFormControlInputNumber"
-                      label="Instruções"
-                      max={10}
-                      min={1}
-                    ></TEInput>
+                    <Input />
                   </div>
                 </div>
               </div>
@@ -269,187 +208,14 @@ export default function ConviteSelected() {
         </div>
       </div>
       {/* <!-- Modal --> */}
-      <TEModal show={showModal2} setShow={setShowModal2}>
-        <TEModalDialog>
-          <TEModalContent>
-            <TEModalHeader>
-              {/* <!--Modal title--> */}
-              <h5 className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
-                Cartão de Recepção
-              </h5>
-              {/* <!--Close button--> */}
-              <button
-                type="button"
-                className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-                onClick={() => setShowModal2(false)}
-                aria-label="Close"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </TEModalHeader>
-            {/* <!--Modal body--> */}
-            <TEModalBody>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-                <div onClick={() => setIsCartaoRecepcao(true)}>
-                  <Image
-                    height={400}
-                    width={900}
-                    src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
-                    className="h-auto rounded-lg shadow-none transition-shadow duration-300 ease-in-out hover:shadow-lg hover:shadow-black/30"
-                    alt=""
-                  />
-                </div>
-                <div onClick={() => setIsCartaoRecepcao(true)}>
-                  <Image
-                    height={400}
-                    width={900}
-                    src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
-                    className="h-auto rounded-lg shadow-none transition-shadow duration-300 ease-in-out hover:shadow-lg hover:shadow-black/30"
-                    alt=""
-                  />
-                </div>
-                <div onClick={() => setIsCartaoRecepcao(true)}>
-                  <Image
-                    height={400}
-                    width={900}
-                    src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
-                    className="h-auto rounded-lg shadow-none transition-shadow duration-300 ease-in-out hover:shadow-lg hover:shadow-black/30"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </TEModalBody>
-            <TEModalFooter>
-              <TERipple rippleColor="light">
-                <button
-                  type="button"
-                  className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
-                  onClick={() => setShowModal2(false)}
-                >
-                  Ok
-                </button>
-              </TERipple>
-            </TEModalFooter>
-          </TEModalContent>
-        </TEModalDialog>
-      </TEModal>
-      <TEModal show={showModal} setShow={setShowModal}>
-        <TEModalDialog>
-          <TEModalContent>
-            <TEModalHeader>
-              {/* <!--Modal title--> */}
-              <h5 className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
-                Cartão de Instruções
-              </h5>
-              {/* <!--Close button--> */}
-              <button
-                type="button"
-                className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-                onClick={() => setShowModal(false)}
-                aria-label="Close"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </TEModalHeader>
-            {/* <!--Modal body--> */}
-            <TEModalBody>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-                <div onClick={() => setIsCrtoesInstrucoes(true)}>
-                  <Image
-                    height={400}
-                    width={900}
-                    src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
-                    className="h-auto rounded-lg shadow-none transition-shadow duration-300 ease-in-out hover:shadow-lg hover:shadow-black/30"
-                    alt=""
-                  />
-                </div>
-                <div onClick={() => setIsCrtoesInstrucoes(true)}>
-                  <Image
-                    height={400}
-                    width={900}
-                    src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
-                    className="h-auto rounded-lg shadow-none transition-shadow duration-300 ease-in-out hover:shadow-lg hover:shadow-black/30"
-                    alt=""
-                  />
-                </div>
-                <div onClick={() => setIsCrtoesInstrucoes(true)}>
-                  <Image
-                    height={400}
-                    width={900}
-                    src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
-                    className="h-auto rounded-lg shadow-none transition-shadow duration-300 ease-in-out hover:shadow-lg hover:shadow-black/30"
-                    alt=""
-                  />
-                </div>
-                <div onClick={() => setIsCrtoesInstrucoes(true)}>
-                  <Image
-                    height={400}
-                    width={900}
-                    src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
-                    className="h-auto rounded-lg shadow-none transition-shadow duration-300 ease-in-out hover:shadow-lg hover:shadow-black/30"
-                    alt=""
-                  />
-                </div>
-                <div onClick={() => setIsCrtoesInstrucoes(true)}>
-                  <Image
-                    height={400}
-                    width={900}
-                    src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
-                    className="h-auto rounded-lg shadow-none transition-shadow duration-300 ease-in-out hover:shadow-lg hover:shadow-black/30"
-                    alt=""
-                  />
-                </div>
-                <div onClick={() => setIsCrtoesInstrucoes(true)}>
-                  <Image
-                    height={400}
-                    width={900}
-                    src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
-                    className="h-auto rounded-lg shadow-none transition-shadow duration-300 ease-in-out hover:shadow-lg hover:shadow-black/30"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </TEModalBody>
-            <TEModalFooter>
-              <TERipple rippleColor="light">
-                <button
-                  type="button"
-                  className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
-                  onClick={() => setShowModal(false)}
-                >
-                  Ok
-                </button>
-              </TERipple>
-            </TEModalFooter>
-          </TEModalContent>
-        </TEModalDialog>
-      </TEModal>
+      <ModelPP
+        setShowModal2={setShowModal2}
+        showModal2={showModal2}
+        setIsCartaoRecepcao={setIsCartaoRecepcao}
+        showModal={showModal}
+        setShowModal={setShowModal}
+        setIsCrtoesInstrucoes={setIsCrtoesInstrucoes}
+      />
     </div>
   );
 }
