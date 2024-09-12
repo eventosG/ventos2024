@@ -131,47 +131,12 @@ export default function Planificacao() {
           <div className="h-screen block rounded-lg bg-white my-4 p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
             {isClicked ? (
               <>
-                <p className="font-bold text-center mb-4">
+                <p
+                  className="font-bold text-center mb-4"
+                  onClick={() => setIsSelected((prev) => !prev)}
+                >
                   Serviços Seleccionados
                 </p>
-                {listServicos3.map((item) => (
-                  <>
-                    <div
-                      key={item.servico}
-                      className="flex flex-row justify-between mb-2 rounded-lg bg-white p-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700"
-                    >
-                      <p
-                        className=" text-sm"
-                        onClick={() => setIsSelected((prev) => !prev)}
-                      >
-                        {item.servico}
-                      </p>
-                      <div className="flex flex-row gap-2">
-                        <p className="text-sm">{item.preco}</p>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          className="size-3 mt-1"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </>
-                ))}
-                <div className="flex flex-row justify-between mb-2">
-                  <p className="font-bold text-sm">Total</p>
-                  <div className="flex flex-row gap-2">
-                    <p className="font-bold text-sm">0.00</p>
-                  </div>
-                </div>
               </>
             ) : (
               <p className="font-bold text-center mb-4">Planificação</p>
@@ -191,35 +156,8 @@ export default function Planificacao() {
               {isSelected ? (
                 <>
                   <div className="text-center mt-4 underline mb-4">
-                    SERVIÇO SELECCIONADO
+                    ORÇAMENTAÇÃO
                   </div>
-                  <div className="flex flex-row justify-between mx-8">
-                    <div className="flex flex-col text-center">
-                      <small>Preço Minimo</small>
-                      <small>0.00</small>
-                    </div>
-                    <div className="flex flex-col text-center">
-                      <small>Preço Final</small>
-                      <small>0.00</small>
-                    </div>
-                    <div className="flex flex-col text-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        className="size-4"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <hr className="mx-4" />
                   <div className="flex justify-end">
                     <button
                       type="button"
@@ -234,129 +172,150 @@ export default function Planificacao() {
                       Download
                     </button>
                   </div>
-                  {/* Encontrar aqui */}
+                  <hr className="mx-4" />
+
                   <div className="m-4">
                     <div className="flex flex-col">
-                      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                      <div className="overflow-x-auto">
+                        <div className="inline-block min-w-full">
                           <div className="overflow-hidden">
                             <table className="min-w-full text-center text-sm font-light">
                               <thead className="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
                                 <tr>
-                                  <th scope="col" className=" pl-4 py-4">
+                                  <th scope="col" className=" pl-4 py-2">
                                     <div className="text-left">
                                       <p>Serviço Seleccionado</p>
                                     </div>
                                   </th>
-                                  <th scope="col" className=" px-2 py-4">
+                                  <th scope="col" className=" px-2 py-2">
+                                    <div className="text-right">
+                                      <p> Descrição</p>
+                                    </div>
+                                  </th>
+                                  <th scope="col" className=" px-2 py-2">
                                     <div className="text-right">
                                       <p> Preço Mínimo</p>
                                     </div>
                                   </th>
-                                  <th scope="col" className=" px-2 py-4">
+
+                                  <th scope="col" className=" px-2 py-2">
                                     <div className="text-right">
                                       <p>Preço Seleccionado</p>
                                     </div>
                                   </th>
-                                  <th scope="col" className=" px-2 py-4"></th>
                                 </tr>
                               </thead>
                               <tbody>
                                 <tr className="border-b dark:border-neutral-500">
                                   <td className="whitespace-nowrap  pl-4 py-4 font-medium">
                                     <div className="text-left">
-                                      <p className="font-bold text-xl">
-                                        Transporte
-                                      </p>
-                                      <p className="ml-6 font-bold">* Noivo</p>
-                                      <p className="ml-6 font-bold">
-                                        * Acompanhantes
-                                      </p>
+                                      <p className="font-bold">Transporte</p>
+                                      <p className="ml-6 ">Noivo</p>
+                                      <p className="ml-6 ">Acompanhantes</p>
                                     </div>
                                   </td>
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="font-bold">8.000,00 MZN</p>
-                                      <p className="text-green-500 font-bold">
+                                      <p className="">Mercedes-Benz</p>
+                                      <p className="">Minibus Coaster</p>
+                                    </div>
+                                  </td>
+                                  <td className="whitespace-nowrap  px-2 py-4">
+                                    <div className="text-right">
+                                      <p>.</p>
+                                      <p className="">8.000,00 MZN</p>
+                                      <p className="text-green-500 ">
                                         2.000,00 MZN
                                       </p>
                                     </div>
                                   </td>
+
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="text-green-500 font-bold">
+                                      <p className="text-green-500 ">
                                         12.000,00 MZN
                                       </p>
-                                      <p className="font-bold">10.000,00 MZN</p>
+                                      <p className="">10.000,00 MZN</p>
                                     </div>
                                   </td>
                                 </tr>
                                 <tr className="border-b dark:border-neutral-500">
                                   <td className="whitespace-nowrap  pl-4 py-4 font-medium">
                                     <div className="text-left">
-                                      <p className="font-bold text-xl">
-                                        Dj e Som
-                                      </p>
-                                      <p className="ml-6 font-bold">* Micro</p>
-                                      <p className="ml-6 font-bold">
-                                        * Aparelhagem
-                                      </p>
+                                      <p className="font-bold">Dj e Som</p>
+                                      <p className="ml-6 ">Micro</p>
+                                      <p className="ml-6 ">Aparelhagem</p>
                                     </div>
                                   </td>
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="text-green-500 font-bold">
+                                      <p className="">Magnetico</p>
+                                      <p className="">Pioneer</p>
+                                    </div>
+                                  </td>
+                                  <td className="whitespace-nowrap  px-2 py-4">
+                                    <div className="text-right">
+                                      <p>.</p>
+                                      <p className="text-green-500 ">
                                         5.000,00 MZN
                                       </p>
-                                      <p className="text-green-500 font-bold">
+                                      <p className="text-green-500 ">
                                         7.000,00 MZN
                                       </p>
                                     </div>
                                   </td>
+
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="font-bold">9.000,00 MZN</p>
-                                      <p className="font-bold">15.000,00 MZN</p>
+                                      <p className="">9.000,00 MZN</p>
+                                      <p className="">15.000,00 MZN</p>
                                     </div>
                                   </td>
                                 </tr>
                                 <tr className="border-b dark:border-neutral-500">
                                   <td className="whitespace-nowrap  pl-4 py-4 font-medium">
                                     <div className="text-left">
-                                      <p className="font-bold text-xl">
+                                      <p className="font-bold">
                                         Fotografia e Vídeos
                                       </p>
-                                      <p className="ml-6 font-bold">
-                                        * Fotografia
-                                      </p>
-                                      <p className="ml-6 font-bold">* Vídeos</p>
-                                      <p className="ml-6 font-bold">
-                                        * Plataforma Giratória
+                                      <p className="ml-6 ">Fotografia</p>
+                                      <p className="ml-6 ">Vídeos</p>
+                                      <p className="ml-6 ">
+                                        Plataforma Giratória
                                       </p>
                                     </div>
                                   </td>
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="font-bold">10.000,00 MZN</p>
-                                      <p className="text-green-500 font-bold">
+                                      <p className="">4K</p>
+                                      <p className="">Camera e Drone</p>
+                                      <p className="">360 Graus</p>
+                                    </div>
+                                  </td>
+                                  <td className="whitespace-nowrap  px-2 py-4">
+                                    <div className="text-right">
+                                      <p>.</p>
+                                      <p className="">10.000,00 MZN</p>
+                                      <p className="text-green-500 ">
                                         6.000,00 MZN
                                       </p>
-                                      <p className="font-bold">4.300,00 MZN</p>
+                                      <p className="">4.300,00 MZN</p>
                                     </div>
                                   </td>
+
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="text-green-500 font-bold">
+                                      <p className="text-green-500 ">
                                         16.000,00 MZN
                                       </p>
-                                      <p className="font-bold">12.000,00 MZN</p>
-                                      <p className="text-green-500 font-bold">
+                                      <p className="">12.000,00 MZN</p>
+                                      <p className="text-green-500 ">
                                         2.400,00 MZN
                                       </p>
                                     </div>
@@ -365,22 +324,27 @@ export default function Planificacao() {
                                 <tr className="border-b dark:border-neutral-500">
                                   <td className="whitespace-nowrap  pl-4 py-4 font-medium">
                                     <div className="text-left">
-                                      <p className="font-bold text-xl">
-                                        Lua-de-Mel
-                                      </p>
-                                      <p className="ml-6 font-bold">* Hotel </p>
+                                      <p className="font-bold">Lua-de-Mel</p>
+                                      <p className="ml-6 ">Hotel </p>
                                     </div>
                                   </td>
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="font-bold">30.000,00 MZN</p>
+                                      <p className="">Hotel 5 Estrelas</p>
                                     </div>
                                   </td>
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="text-green-500 font-bold">
+                                      <p className="">30.000,00 MZN</p>
+                                    </div>
+                                  </td>
+
+                                  <td className="whitespace-nowrap  px-2 py-4">
+                                    <div className="text-right">
+                                      <p>.</p>
+                                      <p className="text-green-500 ">
                                         45.000,00 MZN
                                       </p>
                                     </div>
@@ -390,6 +354,11 @@ export default function Planificacao() {
                                   <td className="whitespace-nowrap  pl-4 py-1 font-medium">
                                     <div className="text-left">
                                       <p className="font-bold">Total</p>
+                                    </div>
+                                  </td>
+                                  <td className="whitespace-nowrap  pl-4 py-1 font-medium">
+                                    <div className="text-left">
+                                      <p className="font-bold"></p>
                                     </div>
                                   </td>
                                   <td className="whitespace-nowrap  px-2 py-1">
@@ -406,11 +375,11 @@ export default function Planificacao() {
                                   </td>
                                 </tr>
                                 {/* Aquiiiiindfn */}
-                                <tr className="border-b dark:border-neutral-500 bg-green-300 mt-10">
+                                {/* <tr className="border-b dark:border-neutral-500 bg-green-300 mt-10">
                                   <td className="whitespace-nowrap  pl-4 py-1 font-medium">
                                     <div className="text-left">
                                       <p className="font-bold">
-                                        Total dos Serviços Aprovados Por Preço
+                                        Total dos Serviços Aprovados
                                       </p>
                                     </div>
                                   </td>
@@ -424,12 +393,15 @@ export default function Planificacao() {
                                       <p className="font-bold">75.400,00 MZN</p>
                                     </div>
                                   </td>
-                                </tr>
-                                <tr className="border-b dark:border-neutral-500 bg-blue-300">
+                                </tr> */}
+                                {/* <tr className="border-b dark:border-neutral-500 bg-blue-300">
                                   <td className="whitespace-nowrap  pl-4 py-1 font-medium">
                                     <div className="text-left">
                                       <p className="font-bold"></p>
                                     </div>
+                                  </td>
+                                  <td className="whitespace-nowrap  px-2 py-1">
+                                    <div className="text-right"></div>
                                   </td>
                                   <td className="whitespace-nowrap  px-2 py-1">
                                     <div className="text-right"></div>
@@ -450,13 +422,72 @@ export default function Planificacao() {
                                       </div>
                                     </div>
                                   </td>
-                                </tr>
+                                </tr> */}
                               </tbody>
                             </table>
                           </div>
                         </div>
                       </div>
                     </div>
+                  </div>
+                  <div className="flex justify-end">
+                    <div className="w-96">
+                      <div className="flex flex-col">
+                        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                          <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                            <div className="overflow-hidden">
+                              <table className="min-w-full text-left text-sm font-light">
+                                <thead className="border-b font-medium dark:border-neutral-500">
+                                  <tr>
+                                    <th scope="col" className="px-6 py-2">
+                                      Subtotal dos Serviços
+                                    </th>
+                                    <th scope="col" className="px-6 py-2">
+                                      .
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr className="border-b dark:border-neutral-500">
+                                    <td className="whitespace-nowrap px-6 py-2 font-medium">
+                                      Minimos
+                                    </td>
+                                    <td className="whitespace-nowrap py-2">
+                                      <div className="flex justify-end">
+                                        <p>20,000.00 MZN</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr className="border-b dark:border-neutral-500">
+                                    <td className="whitespace-nowrap px-6 py-2 font-medium">
+                                      Seleccionados
+                                    </td>
+                                    <td className="whitespace-nowrap py-2">
+                                      <div className="flex justify-end">
+                                        <p>75,400.00 MZN</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-end">
+                    <p className="font-bold text-xl">
+                      Total Global: 95,400.00 MZN
+                    </p>
+                  </div>
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      className="m-4 inline-block rounded bg-primary px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                    >
+                      Finalizar
+                    </button>
                   </div>
                 </>
               ) : (
@@ -496,10 +527,7 @@ export default function Planificacao() {
             </>
           ) : (
             <>
-              <div className="text-center mt-4 underline mb-4">
-                ORÇAMENTAÇÃO
-              </div>
-              <div className="flex flex-row justify-center gap-12">
+              <div className="flex flex-row justify-center gap-12 mt-12">
                 <div className="text-center">
                   <div>Orçamento Dispinivel</div>
                   <div className="rounded-lg bg-white p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 w-60"></div>
