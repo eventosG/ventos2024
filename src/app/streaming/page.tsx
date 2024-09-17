@@ -49,7 +49,7 @@ export default function Servicos() {
       <div className='block col-span-5 w-full'>
         <div className='mx-4'>
                 <div className="text-center font-bold text-xl mb-4 mt-12">
-                    <p>Nome da Cena Celacionada</p>
+                    <p>Nome da Cena Seleccionada</p>
                 </div>
                 <div>
                 {isSelected === "Transporte" && (

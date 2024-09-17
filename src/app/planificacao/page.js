@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { AiOutlineMore } from "react-icons/ai";
 ChartJS.register(ArcElement, Tooltip, Legend);
 const listServicos = [
   { servico: "Transporte", preco: "3.000.00" },
@@ -127,7 +128,7 @@ export default function Planificacao() {
   return (
     <div className="container lg:mx-auto lg:min-h-50vh">
       <div className="grid grid-cols-1 lg:grid-cols-6">
-        <div className="flex flex-col col-span-1">
+        {/* <div className="flex flex-col col-span-1">
           <div className="h-screen block rounded-lg bg-white my-4 p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
             {isClicked ? (
               <>
@@ -142,7 +143,7 @@ export default function Planificacao() {
               <p className="font-bold text-center mb-4">Planificação</p>
             )}
           </div>
-        </div>
+        </div> */}
         <div className="block col-span-5 w-full">
           {isClicked ? (
             <>
@@ -153,11 +154,35 @@ export default function Planificacao() {
               >
                 Voltar
               </button>
+              <button
+                type="button"
+                onClick={() => setIsSelected((prev) => !prev)}
+                className="m-4 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+              >
+                {isSelected ? <> Gráfico</> : <>Tabela</>}
+              </button>
               {isSelected ? (
                 <>
                   <div className="text-center mt-4 underline mb-4">
                     ORÇAMENTAÇÃO
                   </div>
+                  <div className="flex flex-row justify-center mx-8 gap-28 mb-4">
+                    <div className="rounded-lg bg-white p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 w-60">
+                      {" "}
+                      <div className="flex flex-col text-center">
+                        <small>Disponivel</small>
+                        <small>0.00</small>
+                      </div>
+                    </div>
+                    <div className="rounded-lg bg-white p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 w-60">
+                      {" "}
+                      <div className="flex flex-col text-center">
+                        <small>Remanescente</small>
+                        <small>0.00</small>
+                      </div>
+                    </div>
+                  </div>
+                  <hr className="mx-4" />
                   <div className="flex justify-end">
                     <button
                       type="button"
@@ -217,8 +242,18 @@ export default function Planificacao() {
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="">Mercedes-Benz</p>
-                                      <p className="">Minibus Coaster</p>
+                                      <p
+                                        className="cursor-pointer"
+                                        title="Clicar para ver"
+                                      >
+                                        Mercedes-Benz
+                                      </p>
+                                      <p
+                                        className="cursor-pointer"
+                                        title="Clicar para ver"
+                                      >
+                                        Minibus Coaster
+                                      </p>
                                     </div>
                                   </td>
                                   <td className="whitespace-nowrap  px-2 py-4">
@@ -234,10 +269,20 @@ export default function Planificacao() {
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="text-green-500 ">
-                                        12.000,00 MZN
-                                      </p>
-                                      <p className="">10.000,00 MZN</p>
+                                      <div
+                                        className="flex flex-row justify-end cursor-pointer gap-4"
+                                        title="Clicar para editar ou remover"
+                                      >
+                                        <p className="text-green-500 ">
+                                          12.000,00 MZN
+                                        </p>
+                                      </div>
+                                      <div
+                                        className="flex flex-row justify-end cursor-pointer gap-4"
+                                        title="Clicar para editar ou remover"
+                                      >
+                                        <p className="">10.000,00 MZN</p>
+                                      </div>
                                     </div>
                                   </td>
                                 </tr>
@@ -252,8 +297,18 @@ export default function Planificacao() {
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="">Magnetico</p>
-                                      <p className="">Pioneer</p>
+                                      <p
+                                        className="cursor-pointer"
+                                        title="Clicar para ver"
+                                      >
+                                        Magnetico
+                                      </p>
+                                      <p
+                                        className="cursor-pointer"
+                                        title="Clicar para ver"
+                                      >
+                                        Pioneer
+                                      </p>
                                     </div>
                                   </td>
                                   <td className="whitespace-nowrap  px-2 py-4">
@@ -271,8 +326,18 @@ export default function Planificacao() {
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="">9.000,00 MZN</p>
-                                      <p className="">15.000,00 MZN</p>
+                                      <p
+                                        className="cursor-pointer"
+                                        title="Clicar para editar ou remover"
+                                      >
+                                        9.000,00 MZN
+                                      </p>
+                                      <p
+                                        className="cursor-pointer"
+                                        title="Clicar para editar ou remover"
+                                      >
+                                        15.000,00 MZN
+                                      </p>
                                     </div>
                                   </td>
                                 </tr>
@@ -292,9 +357,24 @@ export default function Planificacao() {
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="">4K</p>
-                                      <p className="">Camera e Drone</p>
-                                      <p className="">360 Graus</p>
+                                      <p
+                                        className="cursor-pointer"
+                                        title="Clicar para ver"
+                                      >
+                                        4K
+                                      </p>
+                                      <p
+                                        className="cursor-pointer"
+                                        title="Clicar para ver"
+                                      >
+                                        Camera e Drone
+                                      </p>
+                                      <p
+                                        className="cursor-pointer"
+                                        title="Clicar para ver"
+                                      >
+                                        360 Graus
+                                      </p>
                                     </div>
                                   </td>
                                   <td className="whitespace-nowrap  px-2 py-4">
@@ -311,11 +391,22 @@ export default function Planificacao() {
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="text-green-500 ">
+                                      <p
+                                        className="text-green-500 cursor-pointer"
+                                        title="Clicar para editar ou remover"
+                                      >
                                         16.000,00 MZN
                                       </p>
-                                      <p className="">12.000,00 MZN</p>
-                                      <p className="text-green-500 ">
+                                      <p
+                                        className="cursor-pointer"
+                                        title="Clicar para editar ou remover"
+                                      >
+                                        12.000,00 MZN
+                                      </p>
+                                      <p
+                                        className="text-green-500 cursor-pointer"
+                                        title="Clicar para editar ou remover"
+                                      >
                                         2.400,00 MZN
                                       </p>
                                     </div>
@@ -344,7 +435,10 @@ export default function Planificacao() {
                                   <td className="whitespace-nowrap  px-2 py-4">
                                     <div className="text-right">
                                       <p>.</p>
-                                      <p className="text-green-500 ">
+                                      <p
+                                        className="text-green-500 cursor-pointer"
+                                        title="Clicar para editar ou remover"
+                                      >
                                         45.000,00 MZN
                                       </p>
                                     </div>
@@ -353,7 +447,9 @@ export default function Planificacao() {
                                 <tr className="border-b dark:border-neutral-500 bg-slate-500">
                                   <td className="whitespace-nowrap  pl-4 py-1 font-medium">
                                     <div className="text-left">
-                                      <p className="font-bold">Total</p>
+                                      <p className="font-bold">
+                                        Total Por Preços
+                                      </p>
                                     </div>
                                   </td>
                                   <td className="whitespace-nowrap  pl-4 py-1 font-medium">
@@ -440,7 +536,7 @@ export default function Planificacao() {
                                 <thead className="border-b font-medium dark:border-neutral-500">
                                   <tr>
                                     <th scope="col" className="px-6 py-2">
-                                      Subtotal dos Serviços
+                                      Subtotal dos Serviços Aprovados
                                     </th>
                                     <th scope="col" className="px-6 py-2">
                                       .
@@ -476,12 +572,15 @@ export default function Planificacao() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex justify-end">
-                    <p className="font-bold text-xl">
-                      Total Global: 95,400.00 MZN
-                    </p>
+                  <div className="flex justify-end gap-28 mt-12">
+                    <div>
+                      <p className="font-bold text-xl">Total Global</p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-xl">95,400.00 MZN</p>
+                    </div>
                   </div>
-                  <div className="flex justify-end">
+                  <div className="flex justify-center mt-8">
                     <button
                       type="button"
                       className="m-4 inline-block rounded bg-primary px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
@@ -492,28 +591,6 @@ export default function Planificacao() {
                 </>
               ) : (
                 <>
-                  <div className="text-center mt-4 underline mb-4">
-                    ORÇAMENTO
-                  </div>
-                  <div className="flex flex-row justify-between mx-8">
-                    <div className="flex flex-col text-center">
-                      <small>Disponivel</small>
-                      <small>0.00</small>
-                    </div>
-                    <div className="flex flex-col text-center">
-                      <small>Minimo</small>
-                      <small>0.00</small>
-                    </div>
-                    <div className="flex flex-col text-center">
-                      <small>Final</small>
-                      <small>0.00</small>
-                    </div>
-                    <div className="flex flex-col text-center">
-                      <small>Excedente</small>
-                      <small>0.00</small>
-                    </div>
-                  </div>
-                  <hr className="mx-4" />
                   <div className="text-center mt-4 underline mb-4">
                     Destribuição de Custos
                   </div>
@@ -547,12 +624,12 @@ export default function Planificacao() {
               <div className="text-center mt-4 underline mb-4">
                 SELECÇÃO DE SERVIÇOS
               </div>
-              <button
+              {/* <button
                 type="button"
                 className="ml-4 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
               >
                 Seleccionar Tudo
-              </button>
+              </button> */}
               <div className="flex flex-row gap-4 ml-4 mt-8 justify-center">
                 <div className="mt-4">
                   <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
@@ -1611,7 +1688,7 @@ export default function Planificacao() {
                 <div>Por ver</div>
                 <div className="rounded-lg bg-white p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 w-full"></div>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end mb-12">
                 <button
                   type="button"
                   className="ml-4 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"

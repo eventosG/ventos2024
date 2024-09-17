@@ -1,7 +1,11 @@
 "use client";
 import dynamic from "next/dynamic";
+import { AiFillCloseCircle } from "react-icons/ai";
 import React, { useState, useEffect, useRef } from "react";
 const Graficos = dynamic(() => import("./graficos"), { ssr: false });
+const GraficosParticipacao = dynamic(() => import("./graficosParticipacao"), {
+  ssr: false,
+});
 const TextArea = dynamic(() => import("./textArea"), { ssr: false });
 const DropDown = dynamic(() => import("./dropdown"), { ssr: false });
 var convidados = [
@@ -221,89 +225,43 @@ function Convidados() {
             )}
             <hr />
             <div className="flex justify-end mt-2">
-              <button
-                onClick={() => setShowResumo((prev) => !prev)}
-                type="button"
-                className="inline-block rounded bg-primary px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-              >
-                {showResumo ? <>Resumo</> : <>Resumo Gráfico</>}
-              </button>
+              {showResumo ? (
+                <>
+                  {" "}
+                  <button
+                    onClick={() => setShowResumo((prev) => !prev)}
+                    type="button"
+                    className="inline-block rounded px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal transition duration-150 ease-in-out text-blue-500 hover:text-red-500"
+                  >
+                    <AiFillCloseCircle className="text-xl" />
+                  </button>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <button
+                    onClick={() => setShowResumo((prev) => !prev)}
+                    type="button"
+                    className="inline-block rounded px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal transition duration-150 ease-in-out"
+                  >
+                    Resumo Gráfico
+                  </button>
+                </>
+              )}
             </div>
             {showResumo ? (
               <>
-                <div className="grid grid-cols-1 lg:grid-cols-6 gap-4">
-                  <div className="col-span-4 w-full">
-                    <div className="flex flex-row justify-between">
-                      {/* Ordem sequencial: Confirmado, Pendentes, Cancelados e Recusados */}
-                      <div>
-                        <p className="font-bold mb-2">Nome do Convidado</p>
-                        <p className="">Nome do Convidado</p>
-                        <p className="">Nome do Convidado</p>
-                        <p className="">Nome do Convidado</p>
-                        <p className="">Nome do Convidado</p>
-                        <p className="">Nome do Convidado</p>
-                      </div>
-                      <div>
-                        <p className="font-bold mb-2">Momento</p>
-                        <p className="">Momento</p>
-                        <p className="">Momento</p>
-                        <p className="">Momento</p>
-                        <p className="">Momento</p>
-                        <p className="">Momento</p>
-                      </div>
-                      <div>
-                        <p className="font-bold mb-2">Status</p>
-                        <p className="">Status</p>
-                        <p className="">Status</p>
-                        <p className="">Status</p>
-                        <p className="">Status</p>
-                        <p className="">Status</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-span-2">
-                    <div className="text-center">
-                      <p className="font-bold">Presenças</p>
-                      <Graficos />
-                    </div>
+                <div className="flex justify-center">
+                  <div className="text-center w-1/3">
+                    <p className="font-bold">Presenças</p>
+                    <Graficos />
                   </div>
                 </div>
                 <hr className="my-8" />
-                <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mt-4">
-                  <div className="col-span-4 w-full">
-                    <div className="flex flex-row justify-between">
-                      {/* Ordem sequencial: Confirmado, Pendentes, Cancelados e Recusados */}
-                      <div>
-                        <p className="font-bold mb-2">Nome do Convidado</p>
-                        <p className="">Nome do Convidado</p>
-                        <p className="">Nome do Convidado</p>
-                        <p className="">Nome do Convidado</p>
-                        <p className="">Nome do Convidado</p>
-                        <p className="">Nome do Convidado</p>
-                      </div>
-                      <div>
-                        <p className="font-bold mb-2">Momento</p>
-                        <p className="">Momento</p>
-                        <p className="">Momento</p>
-                        <p className="">Momento</p>
-                        <p className="">Momento</p>
-                        <p className="">Momento</p>
-                      </div>
-                      <div>
-                        <p className="font-bold mb-2">Status</p>
-                        <p className="">Status</p>
-                        <p className="">Status</p>
-                        <p className="">Status</p>
-                        <p className="">Status</p>
-                        <p className="">Status</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-span-2">
-                    <div className="text-center">
-                      <p className="font-bold">Participação</p>
-                      <Graficos />
-                    </div>
+                <div className="flex justify-center">
+                  <div className="text-center w-1/3">
+                    <p className="font-bold">Participação</p>
+                    <GraficosParticipacao />
                   </div>
                 </div>
               </>
@@ -1130,6 +1088,16 @@ function Convidados() {
                         </div>
                       </div>
                     </div>
+                    <div className="flex justify-center">
+                      {" "}
+                      <button
+                        onClick={() => setIsRSVP((prev) => !prev)}
+                        type="button"
+                        className="my-8 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                      >
+                        Enviar RSVP
+                      </button>
+                    </div>
                   </>
                 )}
               </>
@@ -1148,17 +1116,10 @@ function Convidados() {
                 </button>
               </>
             ) : (
-              <>
-                <button
-                  onClick={() => setIsRSVP((prev) => !prev)}
-                  type="button"
-                  className="my-8 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                >
-                  Enviar RSVP
-                </button>
-              </>
+              <></>
             )}
           </div>
+          <div className="mb-12"></div>
         </>
       )}
     </div>

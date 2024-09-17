@@ -1,72 +1,79 @@
 "use client";
 import React from "react";
 import dynamic from "next/dynamic";
-const TEDropdown = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TEDropdown)
+import { AiOutlineFilter } from "react-icons/ai";
+const TEInput = dynamic(() =>
+  import("tw-elements-react").then((res) => res.TEInput)
 );
-const TEDropdownToggle = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TEDropdownToggle)
+const TEPopover = dynamic(() =>
+  import("tw-elements-react").then((res) => res.TEPopover)
 );
-const TEDropdownMenu = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
+const TEPopoverContent = dynamic(() =>
+  import("tw-elements-react").then((res) => res.TEPopoverContent)
 );
-const TEDropdownItem = dynamic(() =>
-  import("tw-elements-react").then((res) => res.TECollapse)
+const TEPopoverToggler = dynamic(() =>
+  import("tw-elements-react").then((res) => res.TEPopoverToggler)
 );
 const TERipple = dynamic(() =>
   import("tw-elements-react").then((res) => res.TERipple)
 );
-
+const TESelect = dynamic(() =>
+  import("tw-elements-react").then((res) => res.TESelect)
+);
+const data = [
+  { text: "One", value: 1 },
+  { text: "Two", value: 2 },
+  { text: "Three", value: 3 },
+  { text: "Four", value: 4 },
+  { text: "Five", value: 5 },
+  { text: "Six", value: 6 },
+  { text: "Seven", value: 7 },
+  { text: "Eight", value: 8 },
+];
 export default function DropDown() {
   return (
     <>
-      <TEDropdown className="flex justify-center">
-        <TERipple rippleColor="light">
-          <TEDropdownToggle className="flex items-center whitespace-nowrap rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] motion-reduce:transition-none dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-            Dropdown button
-            <span className="ml-2 [&>svg]:w-5 w-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </span>
-          </TEDropdownToggle>
-        </TERipple>
+      <div className="flex space-x-1">
+        <TEPopover title="Filtrar">
+          <TERipple rippleColor="light">
+            <TEPopoverToggler className="max-w-[180px] rounded bg-primary-100 px-6 py-2 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200">
+              <AiOutlineFilter className="text-xl" />
+            </TEPopoverToggler>
+          </TERipple>
 
-        <TEDropdownMenu>
-          <TEDropdownItem>
-            <a
-              href="#"
-              className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-            >
-              Action
-            </a>
-          </TEDropdownItem>
-          <TEDropdownItem>
-            <a
-              href="#"
-              className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-            >
-              Another action
-            </a>
-          </TEDropdownItem>
-          <TEDropdownItem>
-            <a
-              href="#"
-              className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:bg-neutral-100 focus:bg-neutral-100 focus:text-neutral-800 focus:outline-none active:no-underline dark:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 dark:active:bg-neutral-600"
-            >
-              Something else here
-            </a>
-          </TEDropdownItem>
-        </TEDropdownMenu>
-      </TEDropdown>
+          <TEPopoverContent placement="bottom">
+            <div className="p-4 text-[#212529] rounded-lg shadow-[0_0px_3px_0_rgba(0,0,0,0.07),0_2px_2px_0_rgba(0,0,0,0.04)] bg-white bg-clip-padding border border-t-0 border-neutral-100 empty:hidden dark:text-white dark:border-0 dark:bg-neutral-700">
+              <div className="mb-2">
+                <small>Preços</small>
+              </div>
+              <div className="flex flex-row gap-2">
+                <TEInput
+                  type="text"
+                  id="exampleFormControlInput1"
+                  label="Preço Minimo"
+                ></TEInput>
+                <TEInput
+                  type="text"
+                  id="exampleFormControlInput1"
+                  label="Preço Máximo"
+                ></TEInput>
+              </div>
+              <div className="mb-2">
+                <small>Categorias</small>
+                <TESelect data={data} />
+              </div>
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+                >
+                  Filtrar
+                </button>
+              </div>
+            </div>
+          </TEPopoverContent>
+        </TEPopover>
+      </div>
     </>
   );
 }

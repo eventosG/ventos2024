@@ -1,15 +1,23 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Countdown from "react-countdown";
+import { AiOutlineCheck } from "react-icons/ai";
 export default function Cronograma() {
   const [showVisao, setShowVisao] = useState(false);
   const [showResumo, setShowResumo] = useState(false);
   const [IsRSVP, setIsRSVP] = useState(false);
   const [momentoText, setMomentoText] = useState("");
+  const [fundo, setFundo] = useState("text-green-500");
   function momento(momento) {
     setShowVisao(true);
     setMomentoText(momento);
   }
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      console.log("Countdown complete!");
+    }, 5000);
+  }, []);
   return (
     <div className="container lg:mx-auto lg:min-h-50vh">
       <div className="mt-4">
@@ -94,7 +102,14 @@ export default function Cronograma() {
                       <td className="whitespace-nowrap  px-6 py-4">Mark</td>
                       <td className="whitespace-nowrap  px-6 py-4">Otto</td>
                       <td className="whitespace-nowrap  px-6 py-4">@mdo</td>
-                      <td className="whitespace-nowrap  px-6 py-4">@mdo</td>
+                      <td className="whitespace-nowrap  px-6 py-4">
+                        {" "}
+                        <div className="flex justify-center">
+                          <Countdown date={Date.now() + 5000}>
+                            <AiOutlineCheck className="text-blue-600" />
+                          </Countdown>
+                        </div>
+                      </td>
                       <td className="whitespace-nowrap  px-6 py-4 cursor-pointer">
                         ...
                       </td>
@@ -106,7 +121,7 @@ export default function Cronograma() {
                       <td className="whitespace-nowrap  px-6 py-4 ">Jacob</td>
                       <td className="whitespace-nowrap  px-6 py-4">Thornton</td>
                       <td className="whitespace-nowrap  px-6 py-4">@fat</td>
-                      <td className="whitespace-nowrap  px-6 py-4">@fat</td>
+                      <td className="whitespace-nowrap  px-6 py-4">00</td>
                       <td className="whitespace-nowrap  px-6 py-4 cursor-pointer">
                         ...
                       </td>

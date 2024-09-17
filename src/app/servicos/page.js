@@ -41,7 +41,15 @@ export default function Servicos() {
       <div className="grid grid-cols-1 lg:grid-cols-6">
         <div className="flex flex-col">
           <div className="h-screen block rounded-lg bg-white my-4 p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-            <p className="font-bold text-center mb-1">Serviços</p>
+            <div className="flex flex-row justify-between">
+              <div>
+                {" "}
+                <p className="font-bold text-center mb-1">Serviços</p>
+              </div>
+              <div>
+                <small className="font-bold text-center mb-1">(0/7)</small>
+              </div>
+            </div>
             <hr />
             {listServicos.map((item) => (
               <>
@@ -91,41 +99,44 @@ export default function Servicos() {
             <div className="text-center font-bold text-xl mb-4">
               {isSelected}
             </div>
-            <div className="flex justify-end">
-              {isFiltroSelected ? (
-                <>
-                  {selectedProduct === "Preço" && (
-                    <>
-                      <div className="flex flex-row gap-4 w-80">
-                        <Input />
-                        <div>
-                          <button
-                            onClick={() => setIsFiltroSelected((prev) => !prev)}
-                            type="button"
-                            className="inline-block rounded bg-primary px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                          >
-                            OK
-                          </button>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                  {selectedProduct === "Categoria" && (
-                    <>
-                      <DropDown />
-                    </>
-                  )}
-                  {selectedProduct === "Classificação" && <></>}
-                </>
-              ) : (
-                <>
-                  <DropDown />
-                </>
-              )}
-            </div>
+
             <div>
               {isSelected === "Transporte" && (
                 <>
+                  <div className="flex justify-end">
+                    {isFiltroSelected ? (
+                      <>
+                        {selectedProduct === "Preço" && (
+                          <>
+                            <div className="flex flex-row gap-4 w-80">
+                              <Input />
+                              <div>
+                                <button
+                                  onClick={() =>
+                                    setIsFiltroSelected((prev) => !prev)
+                                  }
+                                  type="button"
+                                  className="inline-block rounded bg-primary px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                                >
+                                  OK
+                                </button>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                        {selectedProduct === "Categoria" && (
+                          <>
+                            <DropDown />
+                          </>
+                        )}
+                        {selectedProduct === "Classificação" && <></>}
+                      </>
+                    ) : (
+                      <>
+                        <DropDown />
+                      </>
+                    )}
+                  </div>
                   <div className="flex flex-row gap-4">
                     <div>
                       <h3 className="font-bold cursor-pointer">Noivos</h3>
