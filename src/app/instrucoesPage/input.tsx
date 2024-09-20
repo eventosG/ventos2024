@@ -11,7 +11,7 @@ export default function Input() {
       <TEInput
         type="number"
         id="exampleFormControlInput1"
-        label="Nr. de Dias"
+        label="Nr. Cartões"
         min={1}
       ></TEInput>
     </>

@@ -28,14 +28,12 @@ function Countdown({ data }) {
     <div className="countdown">
       <div className="content">
         {Object.entries(timeLeft).map((el) => {
-          const label = el[0];
-          const value2 = el[1];
           return (
-            <div className="box" key={label}>
+            <div className="box" key={el[0]}>
               <div className="value">
-                <span>{value2}</span>
+                <span>{el[1]}</span>
               </div>
-              <span className="label">{label}</span>
+              <span className="label">{el[0]}</span>
             </div>
           );
         })}

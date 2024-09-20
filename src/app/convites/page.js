@@ -1,6 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 const DropDown = dynamic(() => import("./dropdown"), { ssr: false });
 const Input = dynamic(() => import("./input"), { ssr: false });
@@ -19,6 +20,8 @@ export default function Convites() {
   const [isFiltroSelected, setIsFiltroSelected] = useState(false);
   const [productOneProduct, setProductOneProduct] = useState(false);
   const [isConviteClicked, setIsConviteCliced] = useState(false);
+  const [isConviteClicked2, setIsConviteCliced2] = useState(false);
+  const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {}, []);
 
@@ -30,7 +33,18 @@ export default function Convites() {
     setIsFiltroSelected(true);
     setSelectedProduct("Material");
   }
-
+  const textStyleClicked = "cursor-pointer text-blue-400";
+  const textStyleNotClicked = "cursor-pointer hover:text-blue-400";
+  const textStyleClicked2 = "cursor-pointer text-blue-400";
+  const textStyleNotClicked2 = "cursor-pointer";
+  function accoes() {
+    setToggleDropdown((prev) => !prev);
+    setIsConviteCliced((prev) => !prev);
+  }
+  function selectedItem(index) {
+    setIsSelected(index);
+    setToggleDropdown(false);
+  }
   return (
     <div className="container lg:mx-auto lg:min-h-50vh">
       <div className="grid grid-cols-1 lg:grid-cols-6">
@@ -38,39 +52,44 @@ export default function Convites() {
           <div className="h-screen block rounded-lg bg-white my-4 p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
             <p className="font-bold text-center mb-1">Tipo de Convites</p>
             <hr />
-            {/* Os convites devem aparecer em uma caixa  */}
-            {isConviteClicked ? (
-              <>
-                {listServicos.map((item) => (
-                  <>
-                    <p
-                      className="mb-1 hover:text-sky-600 cursor-pointer"
-                      onClick={() => setIsSelected(item.servico)}
-                    >
-                      {item.servico}
-                    </p>
-                  </>
-                ))}
-              </>
-            ) : (
-              <>
-                <p
-                  className="mb-1 hover:text-sky-600 cursor-pointer"
-                  onClick={() => setIsConviteCliced((env) => !env)}
-                >
-                  Convites
-                </p>
-                <p className="mb-1 hover:text-sky-600 cursor-pointer">
-                  Cartão de Instruções
-                </p>
-                <p className="mb-1 hover:text-sky-600 cursor-pointer">
-                  Identificador de Mesas
-                </p>
-                <p className="mb-1 hover:text-sky-600 cursor-pointer">
-                  Caderno de Dedicatória
-                </p>
-              </>
-            )}
+            <p
+              className={
+                isConviteClicked ? textStyleClicked : textStyleNotClicked
+              }
+              onClick={() => accoes()}
+            >
+              Convites
+            </p>
+            <div className="absolute z-50 left-6 rounded-lg w-60 ml-60">
+              {toggleDropdown && (
+                <div className="dropdownDesktop">
+                  <div className="block rounded-lg bg-white p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                    {listServicos.map((item) => (
+                      <p
+                        className="mb-4 cursor-pointer hover:text-blue-400"
+                        key={item.servico}
+                        onClick={() => selectedItem(item.servico)}
+                      >
+                        {" "}
+                        {item.servico}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            <p
+              className="cursor-pointer hover:text-blue-400"
+              onClick={() => setIsSelected("Cartão de Instruções")}
+            >
+              Cartão de Instruções
+            </p>
+            <p className="cursor-pointer hover:text-blue-400">
+              Identificador de Mesas
+            </p>
+            <p className="cursor-pointer hover:text-blue-400">
+              Caderno de Dedicatória
+            </p>
           </div>
         </div>
         <div className="block col-span-5 w-full">
@@ -213,7 +232,7 @@ export default function Convites() {
                 </>
               ) : (
                 <>
-                  <div className="grid grid-cols-5 gap-4">
+                  {/* <div className="grid grid-cols-5 gap-4">
                     <div className="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                       <a href="/convitesPage">
                         <Image
@@ -233,7 +252,7 @@ export default function Convites() {
                         </h5>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </>
               )}
             </div>
@@ -260,6 +279,38 @@ export default function Convites() {
                     </a>
                     <div className="py-2">
                       <p className="font-bold text-center">Nome do Convite</p>
+                      <p className="text-center">Tipo</p>
+                      <h5 className="mt-4 text-center text-sm font-medium leading-tight text-neutral-800 dark:text-neutral-50">
+                        Preço: 0.00
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <div>
+            {isSelected === "Cartão de Instruções" && (
+              <>
+                <div className="flex flex-row justify-between mt-14 mx-4">
+                  <h3 className="font-bold cursor-pointer">Clássicos</h3>
+                  <h3 className="text-sm"></h3>
+                </div>
+                <hr className="mx-4" />
+                <div className="grid grid-cols-5 gap-4 mt-4 mx-4">
+                  <div className="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                    <a href="/instrucoesPage">
+                      <Image
+                        height={400}
+                        width={900}
+                        onClick={() => setProductOneProduct((prev) => !prev)}
+                        className="rounded-t-lg"
+                        src="https://tecdn.b-cdn.net/img/new/standard/nature/184.jpg"
+                        alt=""
+                      />
+                    </a>
+                    <div className="py-2">
+                      <p className="font-bold text-center">Nome do Cartão</p>
                       <p className="text-center">Tipo</p>
                       <h5 className="mt-4 text-center text-sm font-medium leading-tight text-neutral-800 dark:text-neutral-50">
                         Preço: 0.00

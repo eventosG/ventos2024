@@ -11,12 +11,8 @@ export default function Input() {
       <TEInput
         type="number"
         id="exampleFormControlInput1"
-        label="Minimo"
-      ></TEInput>
-      <TEInput
-        type="number"
-        id="exampleFormControlInput1"
-        label="Máximo"
+        label="Nr. Convites"
+        min={1}
       ></TEInput>
     </>
   );
