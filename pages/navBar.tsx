@@ -45,7 +45,7 @@ export default function NavBar() {
   const [toggleDropdown, setToggleDropdown] = useState(false);
   return (
     <nav
-      className="relative flex flex-row w-full flex-wrap items-center justify-between bg-sky-400 py-3 text-neutral-500 shadow-lg hover:text-neutral-700 focus:text-neutral-700 dark:bg-neutral-600 lg:flex-wrap lg:justify-start"
+      className="relative flex flex-row w-full flex-wrap items-center justify-between bg-blue-500 py-3 text-neutral-500 shadow-lg hover:text-neutral-700 focus:text-neutral-700 dark:bg-neutral-600 lg:flex-wrap lg:justify-start"
       data-te-navbar-ref
     >
       <div className="container lg:mx-auto lg:min-h-50vh">
