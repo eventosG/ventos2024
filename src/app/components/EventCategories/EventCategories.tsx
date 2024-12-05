@@ -41,7 +41,7 @@ const EventCategories = () => {
   ];
 
   return (
-    <section className="bg-gray-50 py-16 px-6">
+    <section className="bg-gray-100 py-16 px-6">
       <h1 className="text-4xl font-bold text-gray-800 text-center mb-8">
         Eventos por Categoria
       </h1>

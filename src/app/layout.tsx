@@ -3,16 +3,20 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import dynamic from "next/dynamic";
+import Navbar from "./components/navBar/navBar";
 
-const FooterComponent = dynamic(() => import("../../pages/footer"), { ssr: false });
-const NavBarComponent = dynamic(() => import("../../pages/navBar"), { ssr: false });
+const FooterComponent = dynamic(() => import("../../pages/footer"), {
+  ssr: false,
+});
+const NavBarComponent = dynamic(() => import("../../pages/navBar"), {
+  ssr: false,
+});
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Gestão de Eventos",
   description: "Plataforma de Gestão de Eventos",
 };
-
 
 export default function RootLayout({
   children,
@@ -21,13 +25,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      
       <body className={inter.className}>
-        <NavBarComponent />
+        <Navbar />
         {children}
         <FooterComponent />
-      </body>  
-          
+      </body>
     </html>
   );
 }

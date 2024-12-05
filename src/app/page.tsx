@@ -1,8 +1,10 @@
+import { Escolha } from "./components/Escolha/escolha";
 import EventCategories from "./components/EventCategories/EventCategories";
 import { EventosRealizados } from "./components/eventosRealisados/eventosRealisados";
 import EventPlanningTips from "./components/EventPlanningTips/EventPlanningTips";
 import { Galeres } from "./components/galeria/galeria";
 import { Hero } from "./components/Hero";
+import Navbar from "./components/navBar/navBar";
 import PartnershipsAndSuppliers from "./components/PartnershipsAndSuppliers/PartnershipsAndSuppliers";
 import PricingPackages from "./components/PricingPackages/PricingPackages";
 import { SalaoEvento } from "./components/salaoEvento/salaoEvento";
@@ -24,8 +26,9 @@ export default function Home() {
         <ServicesList />
         <PricingPackages />
         <EventCategories />
+        <Escolha />
         <SpecializedTeam />
-        <EventPlanningTips />
+        {/* <EventPlanningTips /> */}
         <PartnershipsAndSuppliers />
       </main>
     </>

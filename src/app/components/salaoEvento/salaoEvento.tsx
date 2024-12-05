@@ -11,7 +11,7 @@ export const SalaoEvento = () => {
     "https://images.unsplash.com/photo-1663765970236-f2acfde22237?q=80&w=3542&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-50">
       <div className="container mx-auto">
         {/* <div>Salao Evento</div> */}
         <section className="flex flex-col items-center  py-16 px-6">

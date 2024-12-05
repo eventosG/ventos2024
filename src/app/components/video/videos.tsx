@@ -1,129 +1,124 @@
-import { cn } from "../../../../lib/utils";
 import React from "react";
-import { BentoGrid, BentoGridItem } from "../ui/bento-grid";
-import {
-  IconArrowWaveRightUp,
-  IconBoxAlignRightFilled,
-  IconBoxAlignTopLeft,
-  IconClipboardCopy,
-  IconFileBroken,
-  IconSignature,
-  IconTableColumn,
-} from "@tabler/icons-react";
 
 export const VideosService = () => {
   return (
-    <div className=" bg-gray-50">
-      <div className="container mx-auto">
-        {/* <div className="text-center text-blue-500 text-2xl font-serif font-bold mt-4">
-        <p>Videos</p>
-      </div> */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex flex-col items-center py-16 px-6">
-            <h1 className="text-4xl font-bold text-gray-800 text-center mb-6">
-              Guarde Cada Momento: Criação de Vídeos Memoriais Personalizados
-            </h1>
-            <h2 className="text-xl text-gray-600 text-center mb-4">
-              Celebre as memórias mais preciosas do seu evento com vídeos
-              exclusivos e emocionantes.
-            </h2>
-            <p className="text-gray-700 text-center max-w-2xl mb-8">
-              Transforme os momentos inesquecíveis do seu evento em vídeos
-              memoriais criados sob medida. Com nossa solução de gestão de
-              eventos, capturamos os destaques mais especiais e os editamos em
-              uma narrativa visual única, perfeita para compartilhar e reviver
-              sempre que quiser. Desde casamentos emocionantes até celebrações
-              corporativas e aniversários, ajudamos você a manter suas memórias
-              vivas para sempre.
-            </p>
+    <section id="videos" className="py-16 bg-gray-100">
+      <div className="container mx-auto px-6 text-center">
+        <h2 className="text-3xl font-bold text-gray-800 mb-8">
+          Lista de Vídeos
+        </h2>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <a
-                href="#"
-                className="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
-              >
-                Solicite um Orçamento Agora
-              </a>
-              <a
-                href="#"
-                className="text-blue-600 font-semibold py-3 px-6 border border-blue-600 rounded-lg hover:bg-blue-100"
-              >
-                Veja Exemplos de Vídeos Criados
-              </a>
+        {/* Grid de Vídeos */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Vídeo 1 */}
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <iframe
+              className="w-full h-56"
+              src="/videos/video1.mp4"
+              title="Vídeo 1"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <div className="p-4">
+              <h3 className="text-xl font-semibold text-gray-800">
+                Título do Vídeo 1
+              </h3>
+              <p className="text-gray-600">Descrição breve sobre o vídeo 1.</p>
             </div>
-
-            {/* <div className="w-full max-w-4xl mt-12">
-            <video className="w-full rounded-lg shadow-lg" controls>
-              <source
-                src="/videos/exemplo-video-memorial.mp4"
-                type="video/mp4"
-              />
-              Seu navegador não suporta o elemento de vídeo.
-            </video>
-          </div> */}
           </div>
-          <div>
-            <BentoGrid className="max-w-4xl mx-auto">
-              {items.map((item, i) => (
-                <BentoGridItem
-                  key={i}
-                  title={item.title}
-                  description={item.description}
-                  header={item.header}
-                  icon={item.icon}
-                  className={i === 4 || i === 6 ? "md:col-span-2" : ""}
-                />
-              ))}
-            </BentoGrid>
+
+          {/* Vídeo 2 */}
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <iframe
+              className="w-full h-56"
+              src="/videos/video2.mp4"
+              title="Vídeo 2"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <div className="p-4">
+              <h3 className="text-xl font-semibold text-gray-800">
+                Título do Vídeo 2
+              </h3>
+              <p className="text-gray-600">Descrição breve sobre o vídeo 2.</p>
+            </div>
+          </div>
+
+          {/* Vídeo 3 */}
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <iframe
+              className="w-full h-56"
+              src="/videos/video3.mp4"
+              title="Vídeo 3"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <div className="p-4">
+              <h3 className="text-xl font-semibold text-gray-800">
+                Título do Vídeo 3
+              </h3>
+              <p className="text-gray-600">Descrição breve sobre o vídeo 3.</p>
+            </div>
+          </div>
+
+          {/* Vídeo 4 */}
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <iframe
+              className="w-full h-56"
+              src="/videos/video4.mp4"
+              title="Vídeo 4"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <div className="p-4">
+              <h3 className="text-xl font-semibold text-gray-800">
+                Título do Vídeo 4
+              </h3>
+              <p className="text-gray-600">Descrição breve sobre o vídeo 4.</p>
+            </div>
+          </div>
+
+          {/* Vídeo 5 */}
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <iframe
+              className="w-full h-56"
+              src="/videos/video1.mp4"
+              title="Vídeo 5"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <div className="p-4">
+              <h3 className="text-xl font-semibold text-gray-800">
+                Título do Vídeo 5
+              </h3>
+              <p className="text-gray-600">Descrição breve sobre o vídeo 5.</p>
+            </div>
+          </div>
+
+          {/* Vídeo 6 */}
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <iframe
+              className="w-full h-56"
+              src="/videos/video2.mp4"
+              title="Vídeo 6"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <div className="p-4">
+              <h3 className="text-xl font-semibold text-gray-800">
+                Título do Vídeo 6
+              </h3>
+              <p className="text-gray-600">Descrição breve sobre o vídeo 6.</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
-const Skeleton = () => (
-  <video className="w-full max-w-4xl rounded-lg shadow-lg" controls>
-    <source src="/videos/video1.mp4" type="video/mp4" />
-  </video>
-);
-const Skeleton2 = () => (
-  <video className="w-full max-w-4xl rounded-lg shadow-lg" controls>
-    <source src="/videos/video2.mp4" type="video/mp4" />
-  </video>
-);
-const Skeleton3 = () => (
-  <video className="w-full max-w-4xl rounded-lg shadow-lg" controls>
-    <source src="/videos/video3.mp4" type="video/mp4" />
-  </video>
-);
-const Skeleton4 = () => (
-  <video className="w-full max-w-4xl rounded-lg shadow-lg" controls>
-    <source src="/videos/video4.mp4" type="video/mp4" />
-  </video>
-);
-const items = [
-  {
-    title: "Preparativos",
-    description: "Explore the birth of groundbreaking ideas and inventions.",
-    header: <Skeleton />,
-    icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
-  },
-  {
-    title: "Celebração",
-    description: "Dive into the transformative power of technology.",
-    header: <Skeleton2 />,
-    icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
-  },
-  {
-    title: "Casamento",
-    description: "Discover the beauty of thoughtful and functional design.",
-    header: <Skeleton3 />,
-    icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
-  },
-  {
-    title: "Decoração",
-    description: "Discover the beauty of thoughtful and functional design.",
-    header: <Skeleton4 />,
-    icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
-  },
-];

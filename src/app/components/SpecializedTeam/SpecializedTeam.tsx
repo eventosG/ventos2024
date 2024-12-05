@@ -45,9 +45,10 @@ const SpecializedTeam = () => {
         Nossa Equipe Especializada
       </h1>
       <p className="text-gray-700 text-center max-w-3xl mx-auto mb-12">
-        Conheça os profissionais que tornam cada evento único e memorável. Com
-        experiência e dedicação, nossa equipe está pronta para criar
-        experiências inesquecíveis.
+        A nossa equipa de profissionais garante que cada detalhe do seu evento
+        seja perfeito. Não só cuidamos de todos os pormenores com precisão, como
+        transformamos o seu evento num momento único de celebração e memórias
+        inesquecíveis.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {teamMembers.map((member, index) => (
