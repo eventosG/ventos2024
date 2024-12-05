@@ -1,8 +1,8 @@
 import React from "react";
 
 export const VideosService = () => {
-  const API_KEY = "AIzaSyAODkLqSFnOAE-cSRvEF2f5-ugsYB6ReAA";
-  const FILE_ID = "1cUmsijXeEusEjTZH-d2DXouQhuATauAw";
+  const videoUrl =
+    "https://drive.google.com/uc?export=view&id=1cUmsijXeEusEjTZH-d2DXouQhuATauAw";
   return (
     <section id="videos" className="py-16 bg-gray-100">
       <div className="container mx-auto px-6 text-center">
@@ -14,14 +14,14 @@ export const VideosService = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Vídeo 1 */}
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <iframe
-              className="w-full h-56"
-              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
-              title="Vídeo 1"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            <div className="flex justify-center items-center bg-gray-100">
+              <div className="w-full max-w-3xl">
+                <video className="w-full rounded-lg shadow-lg" controls>
+                  <source src={videoUrl} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
+            </div>
             <div className="p-4">
               <h3 className="text-xl font-semibold text-gray-800">
                 Título do Vídeo 1
@@ -32,14 +32,14 @@ export const VideosService = () => {
 
           {/* Vídeo 2 */}
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <iframe
-              className="w-full h-56"
-              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
-              title="Vídeo 2"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            <div className="flex justify-center items-center bg-gray-100">
+              <div className="w-full max-w-3xl">
+                <video className="w-full rounded-lg shadow-lg" controls>
+                  <source src={videoUrl} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
+            </div>
             <div className="p-4">
               <h3 className="text-xl font-semibold text-gray-800">
                 Título do Vídeo 2
@@ -50,14 +50,14 @@ export const VideosService = () => {
 
           {/* Vídeo 3 */}
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <iframe
-              className="w-full h-56"
-              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
-              title="Vídeo 3"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            <div className="flex justify-center items-center bg-gray-100">
+              <div className="w-full max-w-3xl">
+                <video className="w-full rounded-lg shadow-lg" controls>
+                  <source src={videoUrl} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
+            </div>
             <div className="p-4">
               <h3 className="text-xl font-semibold text-gray-800">
                 Título do Vídeo 3
@@ -68,14 +68,14 @@ export const VideosService = () => {
 
           {/* Vídeo 4 */}
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <iframe
-              className="w-full h-56"
-              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
-              title="Vídeo 4"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            <div className="flex justify-center items-center bg-gray-100">
+              <div className="w-full max-w-3xl">
+                <video className="w-full rounded-lg shadow-lg" controls>
+                  <source src={videoUrl} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
+            </div>
             <div className="p-4">
               <h3 className="text-xl font-semibold text-gray-800">
                 Título do Vídeo 4
@@ -86,14 +86,14 @@ export const VideosService = () => {
 
           {/* Vídeo 5 */}
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <iframe
-              className="w-full h-56"
-              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
-              title="Vídeo 5"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            <div className="flex justify-center items-center bg-gray-100">
+              <div className="w-full max-w-3xl">
+                <video className="w-full rounded-lg shadow-lg" controls>
+                  <source src={videoUrl} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
+            </div>
             <div className="p-4">
               <h3 className="text-xl font-semibold text-gray-800">
                 Título do Vídeo 5
@@ -104,14 +104,14 @@ export const VideosService = () => {
 
           {/* Vídeo 6 */}
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <iframe
-              className="w-full h-56"
-              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
-              title="Vídeo 6"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            <div className="flex justify-center items-center bg-gray-100">
+              <div className="w-full max-w-3xl">
+                <video className="w-full rounded-lg shadow-lg" controls>
+                  <source src={videoUrl} type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
+            </div>
             <div className="p-4">
               <h3 className="text-xl font-semibold text-gray-800">
                 Título do Vídeo 6
