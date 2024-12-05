@@ -16,7 +16,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src={`https://www.googleapis.com/drive/v3/files/${FILE_ID}?key=${API_KEY}`}
+              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
               title="Vídeo 1"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -34,7 +34,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src={`https://www.googleapis.com/drive/v3/files/${FILE_ID}?key=${API_KEY}`}
+              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
               title="Vídeo 2"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -52,7 +52,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src={`https://www.googleapis.com/drive/v3/files/${FILE_ID}?key=${API_KEY}`}
+              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
               title="Vídeo 3"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -70,7 +70,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src={`https://www.googleapis.com/drive/v3/files/${FILE_ID}?key=${API_KEY}`}
+              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
               title="Vídeo 4"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -88,7 +88,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src={`https://www.googleapis.com/drive/v3/files/${FILE_ID}?key=${API_KEY}`}
+              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
               title="Vídeo 5"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -106,7 +106,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src={`https://www.googleapis.com/drive/v3/files/${FILE_ID}?key=${API_KEY}`}
+              src={`https://drive.google.com/uc?export=view&id=${FILE_ID}`}
               title="Vídeo 6"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
