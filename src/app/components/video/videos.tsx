@@ -14,7 +14,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing"
+              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing?key=AIzaSyAODkLqSFnOAE-cSRvEF2f5-ugsYB6ReAA"
               title="Vídeo 1"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -32,7 +32,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing"
+              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing?key=AIzaSyAODkLqSFnOAE-cSRvEF2f5-ugsYB6ReAA"
               title="Vídeo 2"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -50,7 +50,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing"
+              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing?key=AIzaSyAODkLqSFnOAE-cSRvEF2f5-ugsYB6ReAA"
               title="Vídeo 3"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -68,7 +68,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing"
+              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing?key=AIzaSyAODkLqSFnOAE-cSRvEF2f5-ugsYB6ReAA"
               title="Vídeo 4"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -86,7 +86,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing"
+              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing?key=AIzaSyAODkLqSFnOAE-cSRvEF2f5-ugsYB6ReAA"
               title="Vídeo 5"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -104,7 +104,7 @@ export const VideosService = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <iframe
               className="w-full h-56"
-              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing"
+              src="https://drive.google.com/file/d/1cUmsijXeEusEjTZH-d2DXouQhuATauAw/view?usp=sharing?key=AIzaSyAODkLqSFnOAE-cSRvEF2f5-ugsYB6ReAA"
               title="Vídeo 6"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
