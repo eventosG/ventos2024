@@ -28,7 +28,7 @@ export const EventosRealizados = () => {
         <h1 className="text-4xl font-bold text-gray-800 text-center mb-6">
           Eventos Realizados
         </h1>
-        <h2 className="text-xl text-gray-600 text-center mb-4">
+        <h2 className="text-xl text-gray-600 text-center">
           Momentos que marcaram e celebraram histórias inesquecíveis.
         </h2>
         <p className="text-gray-700 text-center max-w-2xl mb-8">

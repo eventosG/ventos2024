@@ -9,7 +9,7 @@ import { HoverBorderGradient } from "./ui/hover-border-gradient";
 export const Hero = () => {
   const images = ["/hero/hero1.jpg", "/hero/hero2.jpg", "/hero/hero3.jpg"];
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-100 py-16 px-6 lg:px-20">
+    <section className="grid grid-cols-1 md:grid-cols-3 gap-8 bg-gray-100 py-16 px-6 lg:px-20">
       {/* Textos - Lado Direito */}
       <div className="flex flex-col justify-center text-center lg:text-left">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
@@ -33,7 +33,7 @@ export const Hero = () => {
         </div>
       </div>
       {/* Carrossel - Lado Esquerdo */}
-      <div className="flex justify-center items-center">
+      <div className="col-span-2">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           navigation
@@ -45,7 +45,7 @@ export const Hero = () => {
           {images.map((src, index) => (
             <SwiperSlide key={index}>
               <div
-                className="w-full h-64 lg:h-96 bg-cover bg-center"
+                className="w-full h-64 lg:h-[600px] bg-cover bg-center"
                 style={{ backgroundImage: `url(${src})` }}
               ></div>
             </SwiperSlide>

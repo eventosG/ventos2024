@@ -98,9 +98,9 @@ export const InfiniteMovingCards = ({
                 aria-hidden="true"
                 className="user-select-none -z-1 pointer-events-none absolute -left-0.1 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
               ></div>
-              <span className=" relative z-20 text-sm leading-[1.6] text-blue-400 font-normal">
+              {/* <span className=" relative z-20 text-sm leading-[1.6] text-blue-400 font-normal">
                 {item.title}
-              </span>
+              </span> */}
               <Image
                 height={1400}
                 width={900}
@@ -108,6 +108,11 @@ export const InfiniteMovingCards = ({
                 className="block w-full"
                 alt="..."
               />
+              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                <p className="text-white text-xl font-bold bg-black bg-opacity-50 px-4 py-2 rounded">
+                  {item.title}
+                </p>
+              </div>
             </blockquote>
           </li>
         ))}

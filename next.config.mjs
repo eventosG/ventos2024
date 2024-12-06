@@ -9,6 +9,7 @@ const nextConfig = {
       "tecdn.b-cdn.net",
       "images.unsplash.com",
       "assets.aceternity.com",
+      "drive.google.com",
     ],
   },
   webpack(config) {
