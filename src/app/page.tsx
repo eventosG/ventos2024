@@ -20,16 +20,17 @@ export default function Home() {
         <Hero />
         <EventosRealizados />
         <VideosService />
-        <SalaoEvento />
-        <Galeres />
-        <Testimonials />
-        <ServicesList />
-        <PricingPackages />
-        <EventCategories />
+        {/* <SalaoEvento /> */}
+        {/* <Galeres /> */}
+        {/* <Testimonials /> */}
+        {/* <ServicesList /> */}
+
+        {/* <EventCategories /> */}
         <Escolha />
         <SpecializedTeam />
         {/* <EventPlanningTips /> */}
         <PartnershipsAndSuppliers />
+        <PricingPackages />
       </main>
     </>
   );

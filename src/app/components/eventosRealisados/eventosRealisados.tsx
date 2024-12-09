@@ -5,7 +5,7 @@ import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
 
 const testimonials = [
   {
-    img: "/eventos/eventos1.jpg",
+    img: "/eventos/eventos2.jpg",
     title: "Sociais",
   },
   {
@@ -13,7 +13,7 @@ const testimonials = [
     title: "Sociais",
   },
   {
-    img: "/eventos/eventos3.jpg",
+    img: "/eventos/eventos2.jpg",
     title: "Sociais",
   },
 ];

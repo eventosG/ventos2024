@@ -3,7 +3,7 @@ import { HoverEffect } from "../ui/card-hover-effect";
 export const Escolha = () => {
   return (
     <>
-      <div className="max-w-5xl mx-auto px-8">
+      <div className="container mx-auto px-8">
         <h1 className="text-4xl font-bold text-gray-800 text-center mb-8 mt-12">
           Somos a tua melhor escolha
         </h1>

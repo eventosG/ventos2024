@@ -65,60 +65,6 @@ export const VideosService = () => {
               <p className="text-gray-600">Descrição breve sobre o vídeo 3.</p>
             </div>
           </div>
-
-          {/* Vídeo 4 */}
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="flex justify-center items-center bg-gray-100">
-              <div className="w-full max-w-3xl">
-                <video className="w-full rounded-lg shadow-lg" controls>
-                  <source src={videoUrl} type="video/mp4" />
-                  Seu navegador não suporta o elemento de vídeo.
-                </video>
-              </div>
-            </div>
-            <div className="p-4">
-              <h3 className="text-xl font-semibold text-gray-800">
-                Título do Vídeo 4
-              </h3>
-              <p className="text-gray-600">Descrição breve sobre o vídeo 4.</p>
-            </div>
-          </div>
-
-          {/* Vídeo 5 */}
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="flex justify-center items-center bg-gray-100">
-              <div className="w-full max-w-3xl">
-                <video className="w-full rounded-lg shadow-lg" controls>
-                  <source src={videoUrl} type="video/mp4" />
-                  Seu navegador não suporta o elemento de vídeo.
-                </video>
-              </div>
-            </div>
-            <div className="p-4">
-              <h3 className="text-xl font-semibold text-gray-800">
-                Título do Vídeo 5
-              </h3>
-              <p className="text-gray-600">Descrição breve sobre o vídeo 5.</p>
-            </div>
-          </div>
-
-          {/* Vídeo 6 */}
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="flex justify-center items-center bg-gray-100">
-              <div className="w-full max-w-3xl">
-                <video className="w-full rounded-lg shadow-lg" controls>
-                  <source src={videoUrl} type="video/mp4" />
-                  Seu navegador não suporta o elemento de vídeo.
-                </video>
-              </div>
-            </div>
-            <div className="p-4">
-              <h3 className="text-xl font-semibold text-gray-800">
-                Título do Vídeo 6
-              </h3>
-              <p className="text-gray-600">Descrição breve sobre o vídeo 6.</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
