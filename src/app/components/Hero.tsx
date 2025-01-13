@@ -28,7 +28,9 @@ export const Hero = () => {
             className="dark:bg-black bg-white text-black dark:text-white flex items-center space-x-2"
           >
             {/* <AceternityLogo /> */}
-            <span> Planificar Evento</span>
+            <a href="/novoEvento">
+              <span> Planificar Evento</span>
+            </a>
           </HoverBorderGradient>
         </div>
       </div>

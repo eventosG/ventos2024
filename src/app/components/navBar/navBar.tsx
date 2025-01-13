@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 const headerList = [
   {
     name: "Planificação",
@@ -21,7 +22,7 @@ const headerList = [
   },
   {
     name: "Streaming",
-    link: "streaming",
+    link: "/streaming",
   },
   {
     name: "Cronograma",
@@ -38,6 +39,24 @@ const headerList = [
   {
     name: "Dicas",
     link: "/dicas",
+  },
+];
+const headerList2 = [
+  {
+    name: "Início",
+    link: "/",
+  },
+  {
+    name: "Serviços",
+    link: "/",
+  },
+  {
+    name: "Sobre Nós",
+    link: "/",
+  },
+  {
+    name: "Contactos",
+    link: "/",
   },
 ];
 const Navbar = () => {
@@ -58,20 +77,34 @@ const Navbar = () => {
         </a>
 
         {/* Menu Desktop */}
-        <div className="hidden md:flex space-x-6 list-none">
-          {headerList.map((item) => (
-            <li key={item.link}>
-              <a
-                href={item.link}
-                className="text-white hover:text-blue-200 hover:underline"
-              >
-                {item.name}
-              </a>
-            </li>
-          ))}
-        </div>
-        <div className="hidden md:flex justify-end">
-          {toggleDropdown ? (
+        <SignedOut>
+          <div className="hidden md:flex space-x-6 list-none">
+            {headerList2.map((item) => (
+              <li key={item.link}>
+                <a
+                  href={item.link}
+                  className="text-white hover:text-blue-200 hover:underline"
+                >
+                  {item.name}
+                </a>
+              </li>
+            ))}
+          </div>
+        </SignedOut>
+        <SignedIn>
+          <div className="hidden md:flex space-x-6 list-none">
+            {headerList.map((item) => (
+              <li key={item.link}>
+                <a
+                  href={item.link}
+                  className="text-white hover:text-blue-200 hover:underline"
+                >
+                  {item.name}
+                </a>
+              </li>
+            ))}
+          </div>
+          {/* {toggleDropdown ? (
             <></>
           ) : (
             <>
@@ -84,7 +117,10 @@ const Navbar = () => {
                 onClick={() => setToggleDropdown((prev) => !prev)}
               />
             </>
-          )}
+          )} */}
+        </SignedIn>
+
+        <div className="hidden md:flex justify-end">
           <div className="absolute z-20 top-0 right-16 bg-sky-500 mt-2 rounded-lg text-white">
             {toggleDropdown && (
               <div className="dropdownDesktop">
@@ -210,6 +246,14 @@ const Navbar = () => {
                 </div>
               </div>
             )}
+          </div>
+          <div>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
           </div>
         </div>
 
