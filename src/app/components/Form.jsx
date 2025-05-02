@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useUser } from '@clerk/nextjs';
 // import Reactphone from "./Reactphone";
 
 function Form({
@@ -12,6 +13,7 @@ function Form({
   planificador,
   planificadorId,
 }) {
+  const { user } = useUser();
   const [tipoEvento, setTipoEvento] = useState(false);
   const [eventosSelect, setEventosSelect] = useState("Casamento");
   const [eventosSelect2, setEventosSelect2] = useState("Quê Es?");
@@ -203,64 +205,61 @@ function Form({
   const createEvento = async (tipoEv) => {
     setSubmitting(true);
     try {
-      // const response = await fetch('api/eventos/new', {
-      //     method: 'POST',
-      //     body: JSON.stringify({
-      //         nomeNoiva,
-      //         contactoNoiva,
-      //         nomeNoivo,
-      //         contactoNoivo,
-      //         planificadorEvento,
-      //         nomePlanificador,
-      //         contactoPlanificador,
-      //         localEvento: avenidaRua,
-      //         provincia: provinciaSelecionada,
-      //         distrito: distritoSelecionado,
-      //         bairro: bairroSelecionado,
-      //         numeroCasaQuarteirao,
-      //         pontoReferencia,
-      //         dataEvento,
-      //         temaEvento,
-      //         orcamentoInicial,
-      //         coresEvento,
-      //         convidadosPrevistos,
-      //         tipoEvento: tipoEv,
-      //         tipodeBodas,
-      //         userId: planificadorId,
-      //     })
-      // })
-      console.log({
-        nomeNoiva,
-        contactoNoiva,
-        nomeNoivo,
-        contactoNoivo,
-        planificadorEvento,
-        nomePlanificador,
-        contactoPlanificador,
-        localEvento: avenidaRua,
-        provincia: provinciaSelecionada,
-        distrito: distritoSelecionado,
-        bairro: bairroSelecionado,
-        numeroCasaQuarteirao,
-        pontoReferencia,
-        dataEvento,
-        temaEvento,
-        orcamentoInicial,
-        coresEvento,
-        convidadosPrevistos,
-        tipoEvento: tipoEv,
-        tipodeBodas,
-        userId: planificadorId,
+      const response = await fetch("api/eventos/new", {
+        method: "POST",
+        body: JSON.stringify({
+          criadoPor: user.fullName,
+          criadoPorEmail: user.primaryEmailAddress?.emailAddress,
+          nomeNoiva,
+          contactoNoiva,
+          nomeNoivo,
+          contactoNoivo,
+          planificadorEvento,
+          nomePlanificador,
+          contactoPlanificador,
+          localEvento: avenidaRua,
+          provincia: provinciaSelecionada,
+          distrito: distritoSelecionado,
+          bairro: bairroSelecionado,
+          numeroCasaQuarteirao,
+          pontoReferencia,
+          dataEvento,
+          temaEvento,
+          orcamentoInicial,
+          coresEvento,
+          convidadosPrevistos,
+          tipoEvento: tipoEv,
+          tipodeBodas,
+          status: "Activo",
+        }),
       });
+      if (response.status === 201 || response.status === 200) {
+        toast.success(`${tipoEv} Adicionado com Sucesso! Agora já pode iniciar a planificação do seu evento...`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        
+      }
     } catch (error) {
-      toast.error(`Erro ao adicionar ${error}!`, {
-        position: toast.POSITION.TOP_RIGHT,
+      toast.error(`🦄 Erro ao adicionar ${error}!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
       setSubmitting(false);
     } finally {
-      toast.success(`${tipoEv} Adicionado com Sucesso!`, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
+      localStorage.setItem('tipoEvento', tipoEv);
       setSubmitting(false);
       router.push("/planificacao");
     }
@@ -280,7 +279,7 @@ function Form({
             de Eventos oferece inúmeras vantagens que podem facilitar e
             aprimorar todo o processo.
           </p>
-          <div className="bg-gray-100 p-2 my-4 rounded-xl">
+          <div className="bg-blue-100 p-8 my-4 rounded-xl">
             <div className="flex-center mx-3 mt-5 w-full">
               <select
                 name="cars"
@@ -323,7 +322,11 @@ function Form({
                       </button>
                     </label>
                     <span className="font-normal">Quem és?</span>
-                    <select name="cars2" id="cars2" className="form_input">
+                    <select
+                      name="cars2"
+                      id="cars2"
+                      className="form_input p-1 rounded-xl"
+                    >
                       <option
                         value="Planificador(a)"
                         onClick={() => setPlanificadorEvento("Planificador(a)")}
@@ -350,7 +353,7 @@ function Form({
                         onChange={(e) => setNomePlanificador(e.target.value)}
                         placeholder="Nome"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                       <input
                         value={contactoPlanificador}
@@ -360,7 +363,7 @@ function Form({
                         placeholder="Contacto com whatsapp"
                         required
                         type="text"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                     </div>
                     <span className="font-normal">Nome dos Noivos</span>
@@ -371,7 +374,7 @@ function Form({
                         placeholder="Nome da Noiva"
                         type="text"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                       <input
                         value={nomeNoivo}
@@ -379,7 +382,7 @@ function Form({
                         placeholder="Nome do Noivo"
                         required
                         type="text"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                     </div>
                     <div className="flex flex-row gap-4">
@@ -389,7 +392,7 @@ function Form({
                         placeholder="Contacto da Noiva"
                         type="number"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                       <input
                         value={contactoNoivo}
@@ -397,7 +400,7 @@ function Form({
                         placeholder="Contacto do Noivo"
                         required
                         type="number"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                     </div>
                     <span className="font-normal">Residência dos Noivos</span>
@@ -405,7 +408,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) =>
                           setProvinciaSelecionada(e.target.value)
                         }
@@ -420,7 +423,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) =>
                             setDistritoSelecionado(e.target.value)
                           }
@@ -436,7 +439,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) =>
                             setDistritoSelecionado(e.target.value)
                           }
@@ -454,7 +457,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaMpfumu.map((provincia) => (
@@ -468,7 +471,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoNlhamankulu.map((provincia) => (
@@ -482,7 +485,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaMaxakeni.map((provincia) => (
@@ -496,7 +499,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaMavota.map((provincia) => (
@@ -510,7 +513,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaMubukwana.map((provincia) => (
@@ -524,7 +527,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaTembe.map((provincia) => (
@@ -538,7 +541,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaNyaka.map((provincia) => (
@@ -552,7 +555,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {distritoPMaputoBoane.map((provincia) => (
@@ -566,7 +569,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {distritoPMaputoMarracuene.map((provincia) => (
@@ -580,7 +583,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {distritoPMaputoMatola.map((provincia) => (
@@ -597,7 +600,7 @@ function Form({
                         }
                         placeholder="Número de Quarteirão e Casa"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                     </div>
                     <div className="flex flex-row gap-4">
@@ -606,14 +609,14 @@ function Form({
                         onChange={(e) => setAvenidaRua(e.target.value)}
                         placeholder="Avenida/Rua"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                       <input
                         value={pontoReferencia}
                         onChange={(e) => setPontoReferencia(e.target.value)}
                         placeholder="Ponto de Referência"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                     </div>
                     <span className="font-normal">Data do Casamento</span>
@@ -623,14 +626,14 @@ function Form({
                       onChange={(e) => setDataEvento(e.target.value)}
                       placeholder="Data do Evento"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <span className="font-normal">Tema do Casamento</span>
                     <input
                       value={temaEvento}
                       onChange={(e) => setTemaEvento(e.target.value)}
                       placeholder="(Opcinal)"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <span className="font-normal">Orçamento</span>
                     <input
@@ -639,13 +642,13 @@ function Form({
                       placeholder="Orçamento Inicial"
                       type="number"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <span className="font-normal">Cores do Casamento</span>
                     <select
                       name="cars2"
                       id="cars2"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                       onChange={(e) => setCoresEvento(e.target.value)}
                     >
                       <option value="Preto">Preto</option>
@@ -661,10 +664,13 @@ function Form({
                       onChange={(e) => setConvidadosPrevistos(e.target.value)}
                       placeholder="Número de Convidados"
                       type="number"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <div className="flex-end mx-3 mb-5 gap-4">
-                      <Link href={"/"} className="text-gray-500 px-5 py-1.5 text-sm rounded-full hover:bg-red-500 hover:text-white">
+                      <Link
+                        href={"/"}
+                        className="text-gray-500 px-5 py-1.5 text-sm rounded-full hover:bg-red-500 hover:text-white"
+                      >
                         Cancelar
                       </Link>
 
@@ -694,7 +700,7 @@ function Form({
                     <select
                       name="cars2"
                       id="cars2"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                       onChange={(e) => setTipodeBodas(e.target.value)}
                     >
                       <option value="Bodas de Papel (01 Ano)">
@@ -732,7 +738,11 @@ function Form({
                       </option>
                     </select>
                     <span className="font-normal">Quem és?</span>
-                    <select name="cars2" id="cars2" className="form_input">
+                    <select
+                      name="cars2"
+                      id="cars2"
+                      className="form_input p-1 rounded-xl"
+                    >
                       <option
                         value="Planificador(a)"
                         onClick={() => setPlanificadorEvento("Planificador(a)")}
@@ -759,7 +769,7 @@ function Form({
                         onChange={(e) => setNomePlanificador(e.target.value)}
                         placeholder="Nome"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                       <input
                         value={contactoPlanificador}
@@ -769,7 +779,7 @@ function Form({
                         placeholder="Contacto com whatsapp"
                         required
                         type="text"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                     </div>
                     <span className="font-normal">Nome dos Noivos</span>
@@ -780,7 +790,7 @@ function Form({
                         placeholder="Nome da Noiva"
                         type="text"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                       <input
                         value={nomeNoivo}
@@ -788,7 +798,7 @@ function Form({
                         placeholder="Nome do Noivo"
                         required
                         type="text"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                     </div>
                     <div className="flex flex-row gap-4">
@@ -798,7 +808,7 @@ function Form({
                         placeholder="Contacto da Noiva"
                         type="number"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                       <input
                         value={contactoNoivo}
@@ -806,7 +816,7 @@ function Form({
                         placeholder="Contacto do Noivo"
                         required
                         type="number"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                     </div>
                     <span className="font-normal">Residência dos Noivos</span>
@@ -814,7 +824,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) =>
                           setProvinciaSelecionada(e.target.value)
                         }
@@ -829,7 +839,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) =>
                             setDistritoSelecionado(e.target.value)
                           }
@@ -845,7 +855,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) =>
                             setDistritoSelecionado(e.target.value)
                           }
@@ -863,7 +873,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaMpfumu.map((provincia) => (
@@ -877,7 +887,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoNlhamankulu.map((provincia) => (
@@ -891,7 +901,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaMaxakeni.map((provincia) => (
@@ -905,7 +915,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaMavota.map((provincia) => (
@@ -919,7 +929,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaMubukwana.map((provincia) => (
@@ -933,7 +943,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaTembe.map((provincia) => (
@@ -947,7 +957,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {bairroCMaputoKaNyaka.map((provincia) => (
@@ -961,7 +971,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {distritoPMaputoBoane.map((provincia) => (
@@ -975,7 +985,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {distritoPMaputoMarracuene.map((provincia) => (
@@ -989,7 +999,7 @@ function Form({
                         <select
                           name="cars2"
                           id="cars2"
-                          className="form_input"
+                          className="form_input p-1 rounded-xl"
                           onChange={(e) => setBairroSelecionado(e.target.value)}
                         >
                           {distritoPMaputoMatola.map((provincia) => (
@@ -1006,7 +1016,7 @@ function Form({
                         }
                         placeholder="Número de Quarteirão e Casa"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                     </div>
                     <div className="flex flex-row gap-4">
@@ -1015,14 +1025,14 @@ function Form({
                         onChange={(e) => setAvenidaRua(e.target.value)}
                         placeholder="Avenida/Rua"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                       <input
                         value={pontoReferencia}
                         onChange={(e) => setPontoReferencia(e.target.value)}
                         placeholder="Ponto de Referência"
                         required
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                       />
                     </div>
                     <span className="font-normal">Data do Evento</span>
@@ -1032,14 +1042,14 @@ function Form({
                       onChange={(e) => setDataEvento(e.target.value)}
                       placeholder="Data do Evento"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <span className="font-normal">Tema das Bodas</span>
                     <input
                       value={temaEvento}
                       onChange={(e) => setTemaEvento(e.target.value)}
                       placeholder="(Opcinal)"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <span className="font-normal">Orçamento</span>
                     <input
@@ -1048,13 +1058,13 @@ function Form({
                       placeholder="Orçamento Inicial"
                       type="number"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <span className="font-normal">Cores das Bodas</span>
                     <select
                       name="cars2"
                       id="cars2"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                       onChange={(e) => setCoresEvento(e.target.value)}
                     >
                       <option value="Preto">Preto</option>
@@ -1070,10 +1080,13 @@ function Form({
                       onChange={(e) => setConvidadosPrevistos(e.target.value)}
                       placeholder="Número de Convidados"
                       type="number"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <div className="flex-end mx-3 mb-5 gap-4">
-                      <Link href={"/"} className="text-gray-500 px-5 py-1.5 rounded-full text-sm hover:bg-red-500 hover:text-white">
+                      <Link
+                        href={"/"}
+                        className="text-gray-500 px-5 py-1.5 rounded-full text-sm hover:bg-red-500 hover:text-white"
+                      >
                         Cancelar
                       </Link>
                       <button
@@ -1096,7 +1109,11 @@ function Form({
                     <h3>Lobolo</h3>
                   </label>
                   <span className="font-normal">Quem és?</span>
-                  <select name="cars2" id="cars2" className="form_input">
+                  <select
+                    name="cars2"
+                    id="cars2"
+                    className="form_input p-1 rounded-xl"
+                  >
                     <option
                       value="Planificador(a)"
                       onClick={() => setPlanificadorEvento("Planificador(a)")}
@@ -1123,7 +1140,7 @@ function Form({
                       onChange={(e) => setNomePlanificador(e.target.value)}
                       placeholder="Nome"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={contactoPlanificador}
@@ -1131,7 +1148,7 @@ function Form({
                       placeholder="Contacto com whatsapp"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Nome dos Noivos</span>
@@ -1142,7 +1159,7 @@ function Form({
                       placeholder="Nome da Noiva"
                       type="text"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={nomeNoivo}
@@ -1150,7 +1167,7 @@ function Form({
                       placeholder="Nome do Noivo"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <div className="flex flex-row gap-4">
@@ -1160,7 +1177,7 @@ function Form({
                       placeholder="Contacto da Noiva"
                       type="number"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={contactoNoivo}
@@ -1168,7 +1185,7 @@ function Form({
                       placeholder="Contacto do Noivo"
                       required
                       type="number"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Residência dos Noivos</span>
@@ -1176,7 +1193,7 @@ function Form({
                     <select
                       name="cars2"
                       id="cars2"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                       onChange={(e) => setProvinciaSelecionada(e.target.value)}
                     >
                       {pronvincias.map((provincia) => (
@@ -1189,7 +1206,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoCidadeMaputo.map((provincia) => (
@@ -1203,7 +1220,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoProvinciaMaputo.map((provincia) => (
@@ -1219,7 +1236,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMpfumu.map((provincia) => (
@@ -1233,7 +1250,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoNlhamankulu.map((provincia) => (
@@ -1247,7 +1264,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMaxakeni.map((provincia) => (
@@ -1261,7 +1278,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMavota.map((provincia) => (
@@ -1275,7 +1292,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMubukwana.map((provincia) => (
@@ -1289,7 +1306,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaTembe.map((provincia) => (
@@ -1303,7 +1320,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaNyaka.map((provincia) => (
@@ -1317,7 +1334,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoBoane.map((provincia) => (
@@ -1331,7 +1348,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMarracuene.map((provincia) => (
@@ -1345,7 +1362,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMatola.map((provincia) => (
@@ -1362,7 +1379,7 @@ function Form({
                       }
                       placeholder="Número de Quarteirão e Casa"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <div className="flex flex-row gap-4">
@@ -1371,14 +1388,14 @@ function Form({
                       onChange={(e) => setAvenidaRua(e.target.value)}
                       placeholder="Avenida/Rua"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={pontoReferencia}
                       onChange={(e) => setPontoReferencia(e.target.value)}
                       placeholder="Ponto de Referência"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Data do Evento</span>
@@ -1388,14 +1405,14 @@ function Form({
                     onChange={(e) => setDataEvento(e.target.value)}
                     placeholder="Data do Evento"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Tema do Lobolo</span>
                   <input
                     value={temaEvento}
                     onChange={(e) => setTemaEvento(e.target.value)}
                     placeholder="(Opcinal)"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Orçamento</span>
                   <input
@@ -1404,13 +1421,13 @@ function Form({
                     placeholder="Orçamento Inicial"
                     type="number"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Cores do Lobolo</span>
                   <select
                     name="cars2"
                     id="cars2"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                     onChange={(e) => setCoresEvento(e.target.value)}
                   >
                     <option value="Preto">Preto</option>
@@ -1426,17 +1443,20 @@ function Form({
                     onChange={(e) => setConvidadosPrevistos(e.target.value)}
                     placeholder="Número de Convidados"
                     type="number"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <div className="flex-end mx-3 mb-5 gap-4">
-                    <Link href={"/"} className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white">
+                    <Link
+                      href={"/"}
+                      className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white"
+                    >
                       Cancelar
                     </Link>
                     <button
                       type="submit"
                       disabled={submitting}
                       onClick={() => createEvento("Lobolo")}
-                     className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-blue-500 hover:text-white"
+                      className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-blue-500 hover:text-white"
                     >
                       {submitting ? `${type}...` : type}
                     </button>
@@ -1451,7 +1471,11 @@ function Form({
                     <h3>Anelamento</h3>
                   </label>
                   <span className="font-normal">Quem és?</span>
-                  <select name="cars2" id="cars2" className="form_input">
+                  <select
+                    name="cars2"
+                    id="cars2"
+                    className="form_input p-1 rounded-xl"
+                  >
                     <option
                       value="Planificador(a)"
                       onClick={() => setPlanificadorEvento("Planificador(a)")}
@@ -1478,7 +1502,7 @@ function Form({
                       onChange={(e) => setNomePlanificador(e.target.value)}
                       placeholder="Nome"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={contactoPlanificador}
@@ -1486,7 +1510,7 @@ function Form({
                       placeholder="Contacto com whatsapp"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Nome dos Noivos</span>
@@ -1497,7 +1521,7 @@ function Form({
                       placeholder="Nome da Noiva"
                       type="text"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={nomeNoivo}
@@ -1505,7 +1529,7 @@ function Form({
                       placeholder="Nome do Noivo"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <div className="flex flex-row gap-4">
@@ -1515,7 +1539,7 @@ function Form({
                       placeholder="Contacto da Noiva"
                       type="number"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={contactoNoivo}
@@ -1523,7 +1547,7 @@ function Form({
                       placeholder="Contacto do Noivo"
                       required
                       type="number"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Residência dos Noivos</span>
@@ -1531,7 +1555,7 @@ function Form({
                     <select
                       name="cars2"
                       id="cars2"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                       onChange={(e) => setProvinciaSelecionada(e.target.value)}
                     >
                       {pronvincias.map((provincia) => (
@@ -1544,7 +1568,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoCidadeMaputo.map((provincia) => (
@@ -1558,7 +1582,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoProvinciaMaputo.map((provincia) => (
@@ -1574,7 +1598,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMpfumu.map((provincia) => (
@@ -1588,7 +1612,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoNlhamankulu.map((provincia) => (
@@ -1602,7 +1626,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMaxakeni.map((provincia) => (
@@ -1616,7 +1640,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMavota.map((provincia) => (
@@ -1630,7 +1654,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMubukwana.map((provincia) => (
@@ -1644,7 +1668,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaTembe.map((provincia) => (
@@ -1658,7 +1682,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaNyaka.map((provincia) => (
@@ -1672,7 +1696,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoBoane.map((provincia) => (
@@ -1686,7 +1710,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMarracuene.map((provincia) => (
@@ -1700,7 +1724,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMatola.map((provincia) => (
@@ -1715,7 +1739,7 @@ function Form({
                       onChange={(e) => setNumeroCasaQuarteirao(e.target.value)}
                       placeholder="Número de Quarteirão e Casa"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <div className="flex flex-row gap-4">
@@ -1724,14 +1748,14 @@ function Form({
                       onChange={(e) => setAvenidaRua(e.target.value)}
                       placeholder="Avenida/Rua"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={pontoReferencia}
                       onChange={(e) => setPontoReferencia(e.target.value)}
                       placeholder="Ponto de Referência"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Data do Evento</span>
@@ -1741,14 +1765,14 @@ function Form({
                     onChange={(e) => setDataEvento(e.target.value)}
                     placeholder="Data do Evento"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Tema do Anelamento</span>
                   <input
                     value={temaEvento}
                     onChange={(e) => setTemaEvento(e.target.value)}
                     placeholder="(Opcinal)"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Orçamento</span>
                   <input
@@ -1757,13 +1781,13 @@ function Form({
                     placeholder="Orçamento Inicial"
                     type="number"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Cores do Anelamento</span>
                   <select
                     name="cars2"
                     id="cars2"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                     onChange={(e) => setCoresEvento(e.target.value)}
                   >
                     <option value="Preto">Preto</option>
@@ -1779,10 +1803,13 @@ function Form({
                     onChange={(e) => setConvidadosPrevistos(e.target.value)}
                     placeholder="Número de Convidados"
                     type="number"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <div className="flex-end mx-3 mb-5 gap-4">
-                    <Link href={"/"}  className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white">
+                    <Link
+                      href={"/"}
+                      className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white"
+                    >
                       Cancelar
                     </Link>
 
@@ -1790,7 +1817,7 @@ function Form({
                       type="submit"
                       disabled={submitting}
                       onClick={() => createEvento("Anelamento")}
-                       className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-blue-500 hover:text-white"
+                      className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-blue-500 hover:text-white"
                     >
                       {submitting ? `${type}...` : type}
                     </button>
@@ -1805,7 +1832,11 @@ function Form({
                     <h3>Despedida de Solteiro</h3>
                   </label>
                   <span className="font-normal">Quem és?</span>
-                  <select name="cars2" id="cars2" className="form_input">
+                  <select
+                    name="cars2"
+                    id="cars2"
+                    className="form_input p-1 rounded-xl"
+                  >
                     <option
                       value="Planificador(a)"
                       onClick={() => setPlanificadorEvento("Planificador(a)")}
@@ -1832,7 +1863,7 @@ function Form({
                       onChange={(e) => setNomePlanificador(e.target.value)}
                       placeholder="Nome"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={contactoPlanificador}
@@ -1840,7 +1871,7 @@ function Form({
                       placeholder="Contacto com whatsapp"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <div className="flex flex-row gap-4">
@@ -1850,7 +1881,7 @@ function Form({
                     <select
                       name="cars2"
                       id="cars2"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                       value={nomeNoiva}
                       onChange={(e) => setNomeNoiva(e.target.value)}
                     >
@@ -1869,7 +1900,7 @@ function Form({
                       placeholder="Nome"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <div className="flex flex-row gap-4">
@@ -1879,7 +1910,7 @@ function Form({
                       placeholder="Contacto"
                       required
                       type="number"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Residência do(a) Noivo(a)</span>
@@ -1887,7 +1918,7 @@ function Form({
                     <select
                       name="cars2"
                       id="cars2"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                       onChange={(e) => setProvinciaSelecionada(e.target.value)}
                     >
                       {pronvincias.map((provincia) => (
@@ -1900,7 +1931,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoCidadeMaputo.map((provincia) => (
@@ -1914,7 +1945,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoProvinciaMaputo.map((provincia) => (
@@ -1930,7 +1961,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMpfumu.map((provincia) => (
@@ -1944,7 +1975,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoNlhamankulu.map((provincia) => (
@@ -1958,7 +1989,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMaxakeni.map((provincia) => (
@@ -1972,7 +2003,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMavota.map((provincia) => (
@@ -1986,7 +2017,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMubukwana.map((provincia) => (
@@ -2000,7 +2031,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaTembe.map((provincia) => (
@@ -2014,7 +2045,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaNyaka.map((provincia) => (
@@ -2028,7 +2059,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoBoane.map((provincia) => (
@@ -2042,7 +2073,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMarracuene.map((provincia) => (
@@ -2056,7 +2087,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMatola.map((provincia) => (
@@ -2071,7 +2102,7 @@ function Form({
                       onChange={(e) => setNumeroCasaQuarteirao(e.target.value)}
                       placeholder="Número de Quarteirão e Casa"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <div className="flex flex-row gap-4">
@@ -2080,14 +2111,14 @@ function Form({
                       onChange={(e) => setAvenidaRua(e.target.value)}
                       placeholder="Avenida/Rua"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={pontoReferencia}
                       onChange={(e) => setPontoReferencia(e.target.value)}
                       placeholder="Ponto de Referência"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Data da Despediada</span>
@@ -2097,14 +2128,14 @@ function Form({
                     onChange={(e) => setDataEvento(e.target.value)}
                     placeholder="Data do Evento"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Tema da Despedida</span>
                   <input
                     value={temaEvento}
                     onChange={(e) => setTemaEvento(e.target.value)}
                     placeholder="(Opcinal)"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Orçamento</span>
                   <input
@@ -2113,13 +2144,13 @@ function Form({
                     placeholder="Orçamento Inicial"
                     type="number"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Cores da Despedida</span>
                   <select
                     name="cars2"
                     id="cars2"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                     onChange={(e) => setCoresEvento(e.target.value)}
                   >
                     <option value="Preto">Preto</option>
@@ -2135,17 +2166,20 @@ function Form({
                     onChange={(e) => setConvidadosPrevistos(e.target.value)}
                     placeholder="Número de Convidados"
                     type="number"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <div className="flex-end mx-3 mb-5 gap-4">
-                    <Link href={"/"}  className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white">
+                    <Link
+                      href={"/"}
+                      className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white"
+                    >
                       Cancelar
                     </Link>
                     <button
                       type="submit"
                       disabled={submitting}
                       onClick={() => createEvento("Despedida de Solteiro")}
-                       className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-blue-500 hover:text-white"
+                      className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-blue-500 hover:text-white"
                     >
                       {submitting ? `${type}...` : type}
                     </button>
@@ -2160,7 +2194,11 @@ function Form({
                     <h3>Aniversário</h3>
                   </label>
                   <span className="font-normal">Quem és?</span>
-                  <select name="cars2" id="cars2" className="form_input">
+                  <select
+                    name="cars2"
+                    id="cars2"
+                    className="form_input p-1 rounded-xl"
+                  >
                     <option
                       value="Planificador(a)"
                       onClick={() => setPlanificadorEvento("Planificador(a)")}
@@ -2187,7 +2225,7 @@ function Form({
                       onChange={(e) => setNomePlanificador(e.target.value)}
                       placeholder="Nome"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={contactoPlanificador}
@@ -2195,7 +2233,7 @@ function Form({
                       placeholder="Contacto com whatsapp"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Dados do Aniversariante</span>
@@ -2206,7 +2244,7 @@ function Form({
                       placeholder="Nome do Aniversariante"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={nomeNoivo}
@@ -2214,7 +2252,7 @@ function Form({
                       placeholder="Idade"
                       required
                       type="number"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <button type="button" onClick={() => {}}>
@@ -2227,7 +2265,7 @@ function Form({
                       placeholder="Contacto do Aniversariante/Encarregado"
                       required
                       type="number"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={contactoNoivo}
@@ -2235,7 +2273,7 @@ function Form({
                       placeholder="Sexo do Aniversariante"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">
@@ -2245,7 +2283,7 @@ function Form({
                     <select
                       name="cars2"
                       id="cars2"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                       onChange={(e) => setProvinciaSelecionada(e.target.value)}
                     >
                       {pronvincias.map((provincia) => (
@@ -2258,7 +2296,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoCidadeMaputo.map((provincia) => (
@@ -2272,7 +2310,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoProvinciaMaputo.map((provincia) => (
@@ -2288,7 +2326,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMpfumu.map((provincia) => (
@@ -2302,7 +2340,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoNlhamankulu.map((provincia) => (
@@ -2316,7 +2354,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMaxakeni.map((provincia) => (
@@ -2330,7 +2368,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMavota.map((provincia) => (
@@ -2344,7 +2382,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMubukwana.map((provincia) => (
@@ -2358,7 +2396,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaTembe.map((provincia) => (
@@ -2372,7 +2410,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaNyaka.map((provincia) => (
@@ -2386,7 +2424,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoBoane.map((provincia) => (
@@ -2400,7 +2438,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMarracuene.map((provincia) => (
@@ -2414,7 +2452,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMatola.map((provincia) => (
@@ -2429,7 +2467,7 @@ function Form({
                       onChange={(e) => setNumeroCasaQuarteirao(e.target.value)}
                       placeholder="Número de Quarteirão e Casa"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <div className="flex flex-row gap-4">
@@ -2438,14 +2476,14 @@ function Form({
                       onChange={(e) => setAvenidaRua(e.target.value)}
                       placeholder="Avenida/Rua"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={pontoReferencia}
                       onChange={(e) => setPontoReferencia(e.target.value)}
                       placeholder="Ponto de Referência"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Data do Aniversário</span>
@@ -2455,14 +2493,14 @@ function Form({
                     onChange={(e) => setDataEvento(e.target.value)}
                     placeholder="Data do Aniversário"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Tema do Aniversário</span>
                   <input
                     value={temaEvento}
                     onChange={(e) => setTemaEvento(e.target.value)}
                     placeholder="(Opcinal)"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Orçamento</span>
                   <input
@@ -2471,13 +2509,13 @@ function Form({
                     placeholder="Orçamento Inicial"
                     type="number"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Cores do Aniversário</span>
                   <select
                     name="cars2"
                     id="cars2"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                     onChange={(e) => setCoresEvento(e.target.value)}
                   >
                     <option value="Preto">Preto</option>
@@ -2495,10 +2533,13 @@ function Form({
                     }
                     placeholder="Número de Convidados"
                     type="number"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <div className="flex-end mx-3 mb-5 gap-4">
-                    <Link href={"/"}  className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white">
+                    <Link
+                      href={"/"}
+                      className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white"
+                    >
                       Cancelar
                     </Link>
 
@@ -2506,7 +2547,7 @@ function Form({
                       type="submit"
                       disabled={submitting}
                       onClick={() => createEvento("Aniversário")}
-                       className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-blue-500 hover:text-white"
+                      className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-blue-500 hover:text-white"
                     >
                       {submitting ? `${type}...` : type}
                     </button>
@@ -2524,7 +2565,11 @@ function Form({
                     <h3>Graduação</h3>
                   </label>
                   <span className="font-normal">Quem és?</span>
-                  <select name="cars2" id="cars2" className="form_input">
+                  <select
+                    name="cars2"
+                    id="cars2"
+                    className="form_input p-1 rounded-xl"
+                  >
                     <option
                       value="Planificador(a)"
                       onClick={() => setPlanificadorEvento("Planificador(a)")}
@@ -2551,7 +2596,7 @@ function Form({
                       onChange={(e) => setNomePlanificador(e.target.value)}
                       placeholder="Nome"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={contactoPlanificador}
@@ -2559,7 +2604,7 @@ function Form({
                       placeholder="Contacto com whatsapp"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Dados do Graduado</span>
@@ -2570,7 +2615,7 @@ function Form({
                       placeholder="Nome do Graduado"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={nomeNoivo}
@@ -2578,7 +2623,7 @@ function Form({
                       placeholder="Idade"
                       required
                       type="number"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
 
@@ -2589,7 +2634,7 @@ function Form({
                       placeholder="Contacto do Graduado"
                       required
                       type="number"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={contactoNoivo}
@@ -2597,7 +2642,7 @@ function Form({
                       placeholder="Sexo do Graduado"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <button type="button" onClick={() => {}}>
@@ -2608,7 +2653,7 @@ function Form({
                     <select
                       name="cars2"
                       id="cars2"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                       onChange={(e) => setProvinciaSelecionada(e.target.value)}
                     >
                       {pronvincias.map((provincia) => (
@@ -2621,7 +2666,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoCidadeMaputo.map((provincia) => (
@@ -2635,7 +2680,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoProvinciaMaputo.map((provincia) => (
@@ -2651,7 +2696,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMpfumu.map((provincia) => (
@@ -2665,7 +2710,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoNlhamankulu.map((provincia) => (
@@ -2679,7 +2724,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMaxakeni.map((provincia) => (
@@ -2693,7 +2738,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMavota.map((provincia) => (
@@ -2707,7 +2752,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMubukwana.map((provincia) => (
@@ -2721,7 +2766,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaTembe.map((provincia) => (
@@ -2735,7 +2780,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaNyaka.map((provincia) => (
@@ -2749,7 +2794,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoBoane.map((provincia) => (
@@ -2763,7 +2808,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMarracuene.map((provincia) => (
@@ -2777,7 +2822,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMatola.map((provincia) => (
@@ -2792,7 +2837,7 @@ function Form({
                       onChange={(e) => setNumeroCasaQuarteirao(e.target.value)}
                       placeholder="Número de Quarteirão e Casa"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <div className="flex flex-row gap-4">
@@ -2801,14 +2846,14 @@ function Form({
                       onChange={(e) => setAvenidaRua(e.target.value)}
                       placeholder="Avenida/Rua"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={pontoReferencia}
                       onChange={(e) => setPontoReferencia(e.target.value)}
                       placeholder="Ponto de Referência"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Data da Graduação</span>
@@ -2818,14 +2863,14 @@ function Form({
                     onChange={(e) => setDataEvento(e.target.value)}
                     placeholder="Data da Graduação"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Tema da Graduação</span>
                   <input
                     value={temaEvento}
                     onChange={(e) => setTemaEvento(e.target.value)}
                     placeholder="(Opcinal)"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Orçamento</span>
                   <input
@@ -2834,7 +2879,7 @@ function Form({
                     placeholder="Orçamento Inicial"
                     type="number"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Convidados Previstos</span>
                   <input
@@ -2842,17 +2887,20 @@ function Form({
                     onChange={(e) => setConvidadosPrevistos(e.target.value)}
                     placeholder="Número de Convidados"
                     type="number"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <div className="flex-end mx-3 mb-5 gap-4">
-                    <Link href={"/"}  className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white">
+                    <Link
+                      href={"/"}
+                      className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white"
+                    >
                       Cancelar
                     </Link>
                     <button
                       type="submit"
                       disabled={submitting}
                       onClick={() => createEvento("Graduação")}
-                       className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-blue-500 hover:text-white"
+                      className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-blue-500 hover:text-white"
                     >
                       {submitting ? `${type}...` : type}
                     </button>
@@ -2871,7 +2919,11 @@ function Form({
                     {/* <Reactphone /> */}
                   </label>
                   <span className="font-normal">Quem és?</span>
-                  <select name="cars2" id="cars2" className="form_input">
+                  <select
+                    name="cars2"
+                    id="cars2"
+                    className="form_input p-1 rounded-xl"
+                  >
                     <option
                       value="Planificador(a)"
                       onClick={() => setPlanificadorEvento("Planificador(a)")}
@@ -2898,7 +2950,7 @@ function Form({
                       onChange={(e) => setNomePlanificador(e.target.value)}
                       placeholder="Nome"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={contactoPlanificador}
@@ -2906,7 +2958,7 @@ function Form({
                       placeholder="Contacto com whatsapp"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Dados do Anfitrião</span>
@@ -2917,7 +2969,7 @@ function Form({
                       placeholder="Nome do Anfitrião"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={nomeNoivo}
@@ -2925,7 +2977,7 @@ function Form({
                       placeholder="Idade"
                       required
                       type="number"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
 
@@ -2936,7 +2988,7 @@ function Form({
                       placeholder="Contacto do Anfitrião"
                       required
                       type="number"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={contactoNoivo}
@@ -2944,7 +2996,7 @@ function Form({
                       placeholder="Sexo do Anfitrião"
                       required
                       type="text"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Residência do Anfitrião</span>
@@ -2952,7 +3004,7 @@ function Form({
                     <select
                       name="cars2"
                       id="cars2"
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                       onChange={(e) => setProvinciaSelecionada(e.target.value)}
                     >
                       {pronvincias.map((provincia) => (
@@ -2965,7 +3017,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoCidadeMaputo.map((provincia) => (
@@ -2979,7 +3031,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setDistritoSelecionado(e.target.value)}
                       >
                         {distritoProvinciaMaputo.map((provincia) => (
@@ -2995,7 +3047,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMpfumu.map((provincia) => (
@@ -3009,7 +3061,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoNlhamankulu.map((provincia) => (
@@ -3023,7 +3075,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMaxakeni.map((provincia) => (
@@ -3037,7 +3089,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMavota.map((provincia) => (
@@ -3051,7 +3103,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaMubukwana.map((provincia) => (
@@ -3065,7 +3117,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaTembe.map((provincia) => (
@@ -3079,7 +3131,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {bairroCMaputoKaNyaka.map((provincia) => (
@@ -3093,7 +3145,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoBoane.map((provincia) => (
@@ -3107,7 +3159,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMarracuene.map((provincia) => (
@@ -3121,7 +3173,7 @@ function Form({
                       <select
                         name="cars2"
                         id="cars2"
-                        className="form_input"
+                        className="form_input p-1 rounded-xl"
                         onChange={(e) => setBairroSelecionado(e.target.value)}
                       >
                         {distritoPMaputoMatola.map((provincia) => (
@@ -3136,7 +3188,7 @@ function Form({
                       onChange={(e) => setNumeroCasaQuarteirao(e.target.value)}
                       placeholder="Número de Quarteirão e Casa"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <div className="flex flex-row gap-4">
@@ -3145,14 +3197,14 @@ function Form({
                       onChange={(e) => setAvenidaRua(e.target.value)}
                       placeholder="Avenida/Rua"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                     <input
                       value={pontoReferencia}
                       onChange={(e) => setPontoReferencia(e.target.value)}
                       placeholder="Ponto de Referência"
                       required
-                      className="form_input"
+                      className="form_input p-1 rounded-xl"
                     />
                   </div>
                   <span className="font-normal">Data do Evento</span>
@@ -3163,13 +3215,13 @@ function Form({
                     onChange={(e) => setDataEvento(e.target.value)}
                     placeholder="Data do Evento"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Tipo de Evento Social</span>
                   <select
                     name="cars2"
                     id="cars2"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                     onChange={(e) => setCoresEvento(e.target.value)}
                   >
                     <option value="Xitique">Xitique</option>
@@ -3181,7 +3233,7 @@ function Form({
                     value={temaEvento}
                     onChange={(e) => setTemaEvento(e.target.value)}
                     placeholder="(Opcinal)"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Orçamento</span>
                   <input
@@ -3190,7 +3242,7 @@ function Form({
                     placeholder="Orçamento Inicial"
                     type="number"
                     required
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <span className="font-normal">Convidados Previstos</span>
                   <input
@@ -3198,10 +3250,13 @@ function Form({
                     onChange={(e) => setConvidadosPrevistos(e.target.value)}
                     placeholder="Número de Convidados"
                     type="number"
-                    className="form_input"
+                    className="form_input p-1 rounded-xl"
                   />
                   <div className="flex-end mx-3 mb-5 gap-4">
-                    <Link href={"/"}  className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white">
+                    <Link
+                      href={"/"}
+                      className="px-5 py-1.5 text-sm rounded-full text-black hover:bg-red-500 hover:text-white"
+                    >
                       Cancelar
                     </Link>
 

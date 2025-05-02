@@ -2,6 +2,13 @@
 import dynamic from "next/dynamic";
 import { AiFillCloseCircle } from "react-icons/ai";
 import React, { useState, useEffect, useRef } from "react";
+import Modal from "../components/Models/Modal";
+import ModalMesa from "../components/Models/ModelMesas";
+import ModalConvidado from "../components/Models/ModelConvidado";
+import { useUser } from "@clerk/nextjs";
+import { toast } from "react-toastify";
+import { FaRegTrashAlt } from "react-icons/fa";
+
 const Graficos = dynamic(() => import("./graficos"), { ssr: false });
 const GraficosParticipacao = dynamic(() => import("./graficosParticipacao"), {
   ssr: false,
@@ -26,11 +33,393 @@ function Convidados() {
   const [showVisao, setShowVisao] = useState(false);
   const [showResumo, setShowResumo] = useState(false);
   const [IsRSVP, setIsRSVP] = useState(false);
+  const [tipoEventoSelected, settipoEventoSelected] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenMesa, setIsModalOpenMesa] = useState(false);
+  const [isModalOpenConvidado, setIsModalOpenConvidado] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [momentoText, setMomentoText] = useState("");
+  const [actualizar, setActualizar] = useState("");
+  const [nomeGrupo, setNomeGrupo] = useState("");
+  const [nomeMesa, setNomeMesa] = useState("");
+  const [nomeConvidado, setNomeConvidado] = useState("");
+  const [grupos, setGrupos] = useState("Convidados Especiais");
+  const [mesas, setMesas] = useState("");
+  const [participacao, setParticipacao] = useState("Presencial");
+  const [momento2, setMomento] = useState("Compo de Água");
+  const [convidadosPredefinidos, setConvidadosPredefinidos] = useState("");
+  const [convidadosConfirmados, setConvidadosConfirmados] = useState("");
+  const [convidadosPendentes, setConvidadosPendentes] = useState("");
+  const [convidadosCancelados, setConvidadosCancelados] = useState("0");
+  const [convidadosCRecusado, setConvidadosCRecusado] = useState("0");
+  const [participacaoVirtual, setParticipacaoVirtual] = useState("0");
+  const [participacaoPresencial, setParticipacaoPresencial] = useState("0");
+  const [listaGruposF, setListaGruposF] = useState([]);
+  const [listaMesasF, setListaMesasF] = useState([]);
+  const [listaConvidados, setListaConvidados] = useState([]);
+  const { user } = useUser();
+  let listaGrupos = [];
+  let listaMesas = [];
+  let listaConvidadosF = [];
+  let convidadosConfirmadosV = 0;
+  let convidadosPendentesV = 0;
+  let participacaoVirtualV = 0;
+  let participacaoPresencialV = 0;
   function momento(momento) {
     setShowVisao(true);
     setMomentoText(momento);
   }
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const openModalMesa = () => setIsModalOpenMesa(true);
+  const closeModalMesa = () => setIsModalOpenMesa(false);
+  const openModalConvidado = () => setIsModalOpenConvidado(true);
+  const closeModalConvidado = () => setIsModalOpenConvidado(false);
+  useEffect(() => {
+    settipoEventoSelected(localStorage.getItem("tipoEvento"));
+  }, []);
+  useEffect(() => {
+    fetch("api/grupos/get") // Rota de API local em Next.js
+      .then((res) => res.json())
+      .then((data) => {
+        listaGrupos = [];
+        data.map((evento) => {
+          if (
+            evento.criadoPor === user?.fullName ||
+            evento.criadoPorEmail === user?.primaryEmailAddress?.emailAddress
+          ) {
+            listaGrupos.push(evento);
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar dados:", error);
+      })
+      .finally(() => {
+        setListaGruposF(listaGrupos);
+      });
+    fetch("api/mesa/get") // Rota de API local em Next.js
+      .then((res) => res.json())
+      .then((data) => {
+        listaMesas = [];
+        data.map((evento) => {
+          if (
+            evento.criadoPor === user?.fullName ||
+            evento.criadoPorEmail === user?.primaryEmailAddress?.emailAddress
+          ) {
+            listaMesas.push(evento);
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar dados:", error);
+      })
+      .finally(() => {
+        setListaMesasF(listaMesas);
+      });
+    fetch("api/convidados/get") // Rota de API local em Next.js
+      .then((res) => res.json())
+      .then((data) => {
+        listaConvidadosF = [];
+        convidadosConfirmadosV = 0;
+        convidadosPendentesV = 0;
+        participacaoVirtualV = 0;
+        participacaoPresencialV = 0;
+        data.map((evento) => {
+          if (
+            evento.criadoPor === user?.fullName ||
+            evento.criadoPorEmail === user?.primaryEmailAddress?.emailAddress
+          ) {
+            listaConvidadosF.push(evento);
+            if (evento.status === "Confirmado") {
+              convidadosConfirmadosV += 1;
+            }
+            if (evento.status === "Pendente") {
+              convidadosPendentesV += 1;
+            }
+            if (evento.participacao === "Presencial") {
+              participacaoPresencialV += 1;
+            } else {
+              participacaoVirtualV += 1;
+            }
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar dados:", error);
+      })
+      .finally(() => {
+        setListaConvidados(listaConvidadosF);
+        setConvidadosConfirmados(convidadosConfirmadosV);
+        setConvidadosPendentes(convidadosPendentesV);
+        setParticipacaoVirtual(participacaoVirtualV);
+        setParticipacaoPresencial(participacaoPresencialV);
+      });
+
+    fetch("api/eventos/get") // Rota de API local em Next.js
+      .then((res) => res.json())
+      .then((data) => {
+        data.map((evento) => {
+          if (
+            evento.criadoPor === user?.fullName ||
+            evento.criadoPorEmail === user?.primaryEmailAddress?.emailAddress
+          ) {
+            if (evento.tipoEvento === tipoEventoSelected) {
+              setConvidadosPredefinidos(evento.convidadosPrevistos);
+            }
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar dados:", error);
+      })
+      .finally(() => {});
+  }, [user?.fullName, user?.primaryEmailAddress?.emailAddress, actualizar]);
+
+  const createGroup = async () => {
+    setSubmitting(true);
+    setActualizar("asaaf");
+    closeModal();
+    try {
+      toast.info(`🦄 Adicionando Grupo!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      if (nomeGrupo === "") {
+        toast.error(`🦄 Todos os campos devem ser preenchidos!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setSubmitting(false);
+        return;
+      } else {
+        const response = await fetch("api/grupos/new", {
+          method: "POST",
+          body: JSON.stringify({
+            criadoPor: user.fullName,
+            criadoPorEmail: user.primaryEmailAddress?.emailAddress,
+            nomeGrupo,
+          }),
+        });
+        toast.success(`Grupo ${nomeGrupo} Adicionado com Sucesso!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    } catch (error) {
+      setActualizar("fged");
+      toast.error(`🦄 Erro ao adicionar ${error}!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setSubmitting(false);
+    } finally {
+      setNomeGrupo("");
+      setSubmitting(false);
+      setActualizar("dadas");
+      // router.push("/planificacao");
+    }
+  };
+  const createMesa = async () => {
+    setSubmitting(true);
+    setActualizar("asaaf");
+    setIsModalOpenMesa(false);
+    try {
+      toast.info(`🦄 Adicionando Mesa!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      if (nomeMesa === "") {
+        toast.error(`🦄 Todos os campos devem ser preenchidos!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setSubmitting(false);
+        return;
+      } else {
+        const response = await fetch("api/mesa/new", {
+          method: "POST",
+          body: JSON.stringify({
+            criadoPor: user.fullName,
+            criadoPorEmail: user.primaryEmailAddress?.emailAddress,
+            nomeMesa,
+          }),
+        });
+        toast.success(`Mesa ${nomeMesa} Adicionado com Sucesso!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    } catch (error) {
+      setActualizar("fged");
+      toast.error(`🦄 Erro ao adicionar ${error}!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setSubmitting(false);
+    } finally {
+      setNomeMesa("");
+      setSubmitting(false);
+      setActualizar("dadas");
+      // router.push("/planificacao");
+    }
+  };
+  const createConvidado = async () => {
+    setSubmitting(true);
+    setActualizar("asaaf");
+    setIsModalOpenConvidado(false);
+    try {
+      toast.info(`🦄 Adicionando Convidado!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      if (nomeConvidado === "") {
+        toast.error(`🦄 Necessário Nome do Convidado!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        if (mesas === "Mesas") {
+          toast.error(`🦄 Seleccione a mesa do convidado ${nomeConvidado}!`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        } else {
+          const response = await fetch("api/convidados/new", {
+            method: "POST",
+            body: JSON.stringify({
+              criadoPor: user.fullName,
+              criadoPorEmail: user.primaryEmailAddress?.emailAddress,
+              nomeConvidado,
+              grupos,
+              mesas,
+              participacao,
+              momento2,
+              status: "Pendente",
+            }),
+          });
+          toast.success(`Convidado ${nomeConvidado} Adicionado com Sucesso!`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      }
+    } catch (error) {
+      setActualizar("fged");
+      toast.error(`🦄 Erro ao adicionar ${error}!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setSubmitting(false);
+    } finally {
+      setNomeConvidado("");
+      setSubmitting(false);
+      setActualizar("dadas");
+      setGrupos("Convidados Especiais");
+      // router.push("/planificacao");
+    }
+  };
+  const handleDeleteServico = async (id) => {
+    setActualizar("a9");
+    if (!confirm(`Tem certeza que deseja remover este convidado?`)) return;
+
+    try {
+      const res = await fetch(`/api/convidados/delete/${id}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        setActualizar("a10");
+        alert("Convidado removido com sucesso!");
+        router.refresh(); // Atualiza a página sem recarregar completamente
+      } else {
+        const data = await res.json();
+        alert(`Erro: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Erro ao remover evento:", error);
+    }
+  };
   return (
     <div className="container lg:mx-auto lg:min-h-50vh">
       {IsRSVP ? (
@@ -201,24 +590,26 @@ function Convidados() {
                     <p className="font-bold">Total de Convidados</p>
                     <div className="flex flex-row justify-between">
                       <div>
-                        <p className="">Pré-definidos: 0</p>
+                        <p className="">
+                          Pré-definidos: {convidadosPredefinidos}
+                        </p>
                       </div>
                       <div>
-                        <p className="">Inseridos: 0</p>
+                        <p className="">Inseridos: {listaConvidados.length}</p>
                       </div>
                     </div>
                   </div>
                   <div className="text-center block rounded-lg bg-white my-4 p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <p className="font-bold">Confirmados</p>
-                    <p className="font-bold">0</p>
+                    <p>{convidadosConfirmados}</p>
                   </div>
                   <div className="text-center block rounded-lg bg-white my-4 p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <p className="font-bold">Pendentes</p>
-                    <p className="font-bold">0</p>
+                    <p>{convidadosPendentes}</p>
                   </div>
                   <div className="text-center block rounded-lg bg-white my-4 p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <p className="font-bold">Alocados</p>
-                    <p className="font-bold">0</p>
+                    <p>0</p>
                   </div>
                 </div>
               </>
@@ -254,552 +645,96 @@ function Convidados() {
                 <div className="flex justify-center">
                   <div className="text-center w-1/3">
                     <p className="font-bold">Presenças</p>
-                    <Graficos />
+                    <Graficos
+                      convidadosConfirmados={convidadosConfirmados}
+                      convidadosPendentes={convidadosPendentes}
+                      convidadosCancelados={convidadosCancelados}
+                      convidadosCRecusado={convidadosCRecusado}
+                    />
                   </div>
                 </div>
                 <hr className="my-8" />
                 <div className="flex justify-center">
                   <div className="text-center w-1/3">
                     <p className="font-bold">Participação</p>
-                    <GraficosParticipacao />
+                    <GraficosParticipacao
+                      participacaoPresencial={participacaoPresencial}
+                      participacaoVirtual={participacaoVirtual}
+                    />
                   </div>
                 </div>
               </>
             ) : (
               <>
                 {showVisao ? (
-                  <>
-                    <div className="mt-12">
-                      <div className="flex justify-between">
-                        <p className="font-bold">Convidados Especiais</p>
-                        <p className="text-sm">RSVP: 2/6</p>
-                      </div>
-                      <hr />
-                      <div className="block rounded-lg bg-white my-4 p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                        <div className="flex flex-row justify-between">
-                          <div className="flex flex-row gap-4">
-                            <button
-                              type="button"
-                              className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
-                            >
-                              + Convidado
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col">
-                        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                          <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                            <div className="overflow-hidden">
-                              <table className="min-w-full text-center text-sm font-light">
-                                <thead className="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
-                                  <tr>
-                                    <th scope="col" className=" px-6 py-4">
-                                      #
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Nome
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Mesa
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Participação
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Status
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4"></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      1
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Maria Miguel
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Noivos
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500">
-                                      Cancelado
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      2
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Miguel Cossa
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Noivos
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-green-500">
-                                      Confirmado
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-12 mb-6">
-                      <div className="flex justify-between">
-                        <p className="font-bold">Meus Convidados</p>
-                        <p className="text-sm">RSVP: 4/10</p>
-                      </div>
-                      <hr />
-                      <div className="block rounded-lg bg-white my-4 p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                        <div className="flex flex-row justify-between">
-                          <div className="flex flex-row gap-4">
-                            <button
-                              type="button"
-                              className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
-                            >
-                              + Grupos
-                            </button>
-                            <button
-                              type="button"
-                              className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
-                            >
-                              + Mesas
-                            </button>
-                            <button
-                              type="button"
-                              className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
-                            >
-                              + Convidado
-                            </button>
-                          </div>
-                          <div className="flex flex-row gap-12">
-                            <div className="flex flex-row gap-4">
-                              <div className="w-80">
-                                <div className="relative flex w-full flex-wrap items-stretch">
-                                  <input
-                                    type="search"
-                                    className="relative m-0 block flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
-                                    placeholder="Search"
-                                    aria-label="Search"
-                                    aria-describedby="button-addon2"
-                                  />
-
-                                  {/* <!--Search icon--> */}
-                                  <span
-                                    className="input-group-text flex items-center whitespace-nowrap rounded px-3 py-1.5 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
-                                    id="basic-addon2"
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 20 20"
-                                      fill="currentColor"
-                                      className="h-5 w-5"
-                                    >
-                                      <path
-                                        fillRule="evenodd"
-                                        d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                                        clipRule="evenodd"
-                                      />
-                                    </svg>
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="w-24">
-                                <DropDown />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="font-bold mt-12">Familiares da Noiva</p>
-                      <hr />
-                      <div className="flex flex-col">
-                        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                          <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                            <div className="overflow-hidden">
-                              <table className="min-w-full text-center text-sm font-light">
-                                <thead className="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
-                                  <tr>
-                                    <th scope="col" className=" px-6 py-4">
-                                      #
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Nome
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Mesa
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Momento
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Participação
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Status
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4"></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      1
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Ana Jacinto
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Anjos
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      {momentoText}
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-yellow-500">
-                                      Pendente
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-yellow-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      2
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Luis Cossa
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Querubim
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      {momentoText}
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500">
-                                      Recusado
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="font-bold mt-12">Familiares do Noivo</p>
-                      <hr />
-                      <div className="flex flex-col">
-                        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                          <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                            <div className="overflow-hidden">
-                              <table className="min-w-full text-center text-sm font-light">
-                                <thead className="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
-                                  <tr>
-                                    <th scope="col" className=" px-6 py-4">
-                                      #
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Nome
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Mesa
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Momento
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Participação
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Status
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4"></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      1
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Ana Jacinto
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Anjos
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      {momentoText}
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-yellow-500">
-                                      Pendente
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      2
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Luis Cossa
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Querubim
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      {momentoText}
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500">
-                                      Recusado
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="font-bold mt-12">Outros</p>
-                      <hr />
-                      <div className="flex flex-col">
-                        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                          <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                            <div className="overflow-hidden">
-                              <table className="min-w-full text-center text-sm font-light">
-                                <thead className="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
-                                  <tr>
-                                    <th scope="col" className=" px-6 py-4">
-                                      #
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Nome
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Mesa
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Momento
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Participação
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Status
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4"></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      1
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Ana Jacinto
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Anjos
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      {momentoText}
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-yellow-500">
-                                      Pendente
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      2
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Luis Cossa
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Querubim
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      {momentoText}
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500">
-                                      Recusado
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </>
+                  <></>
                 ) : (
                   <>
                     <div className="mt-12">
                       <div className="flex justify-between">
-                        <p className="font-bold">Convidados Especiais</p>
-                        <p className="text-sm">RSVP: 2/6</p>
-                      </div>
-                      <hr />
-                      <div className="block rounded-lg bg-white my-4 p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                        <div className="flex flex-row justify-between">
-                          <div className="flex flex-row gap-4">
-                            <button
-                              type="button"
-                              className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
-                            >
-                              + Convidado
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col">
-                        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                          <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                            <div className="overflow-hidden">
-                              <table className="min-w-full text-center text-sm font-light">
-                                <thead className="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
-                                  <tr>
-                                    <th scope="col" className=" px-6 py-4">
-                                      #
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Nome
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Mesa
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Participação
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4">
-                                      Status
-                                    </th>
-                                    <th scope="col" className=" px-6 py-4"></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      1
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Maria Miguel
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Noivos
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500">
-                                      Cancelado
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      2
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Miguel Cossa
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Noivos
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-green-500">
-                                      Confirmado
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-12 mb-6">
-                      <div className="flex justify-between">
                         <p className="font-bold">Meus Convidados</p>
-                        <p className="text-sm">RSVP: 4/10</p>
+                        <p className="text-sm">
+                          RSVP: {listaConvidados.length}/
+                          {convidadosPredefinidos}
+                        </p>
                       </div>
                       <hr />
                       <div className="block rounded-lg bg-white my-4 p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                         <div className="flex flex-row justify-between">
                           <div className="flex flex-row gap-4">
+                            <Modal
+                              isOpen={isModalOpen}
+                              onClose={closeModal}
+                              nomeGrupo={nomeGrupo}
+                              setNomeGrupo={setNomeGrupo}
+                              createServicoSelecionado={createGroup}
+                              closeModal={closeModal}
+                            />
+                            <ModalMesa
+                              isOpen={isModalOpenMesa}
+                              onClose={closeModalMesa}
+                              nomeGrupo={nomeMesa}
+                              setNomeGrupo={setNomeMesa}
+                              createServicoSelecionado={createMesa}
+                              closeModal={closeModalMesa}
+                            />
+                            <ModalConvidado
+                              isOpen={isModalOpenConvidado}
+                              onClose={closeModalConvidado}
+                              nomeConvidado={nomeConvidado}
+                              setNomeConvidado={setNomeConvidado}
+                              createServicoSelecionado={createConvidado}
+                              listaGruposF={listaGruposF}
+                              listaMesasF={listaMesasF}
+                              closeModal={closeModalConvidado}
+                              setGrupos={setGrupos}
+                              setMesas={setMesas}
+                              setParticipacao={setParticipacao}
+                              setMomento={setMomento}
+                            />
                             <button
                               type="button"
+                              onClick={openModal}
                               className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
                             >
                               + Grupos
                             </button>
                             <button
                               type="button"
+                              onClick={openModalMesa}
                               className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
                             >
                               + Mesas
                             </button>
                             <button
                               type="button"
+                              onClick={openModalConvidado}
                               className="inline-block rounded bg-neutral-50 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]"
                             >
                               + Convidado
                             </button>
                           </div>
-                          <div className="flex flex-row gap-12">
+                          {/* <div className="flex flex-row gap-12">
                             <div className="flex flex-row gap-4">
                               <div className="w-80">
                                 <div className="relative flex w-full flex-wrap items-stretch">
@@ -811,7 +746,6 @@ function Convidados() {
                                     aria-describedby="button-addon2"
                                   />
 
-                                  {/* <!--Search icon--> */}
                                   <span
                                     className="input-group-text flex items-center whitespace-nowrap rounded px-3 py-1.5 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
                                     id="basic-addon2"
@@ -835,9 +769,90 @@ function Convidados() {
                             <div className="w-24">
                               <DropDown />
                             </div>
+                          </div> */}
+                        </div>
+                      </div>
+                      <div className="flex justify-between">
+                        <p className="font-bold">Convidados Especiais</p>
+                        <p className="text-sm">.</p>
+                      </div>
+                      <hr />
+                      <div className="flex flex-col">
+                        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                          <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                            <div className="overflow-hidden">
+                              <table className="min-w-full text-center text-sm font-light">
+                                <thead className="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
+                                  <tr>
+                                    <th scope="col" className=" px-6 py-4">
+                                      #
+                                    </th>
+                                    <th scope="col" className=" px-6 py-4">
+                                      Nome
+                                    </th>
+                                    <th scope="col" className=" px-6 py-4">
+                                      Mesa
+                                    </th>
+                                    <th scope="col" className=" px-6 py-4">
+                                      Participação
+                                    </th>
+                                    <th scope="col" className=" px-6 py-4">
+                                      Status
+                                    </th>
+                                    <th scope="col" className=" px-6 py-4"></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {listaConvidados.length > 0 && (
+                                    <>
+                                      {listaConvidados.map(
+                                        (convidado, index) => (
+                                          <>
+                                            {convidado.grupos ===
+                                              "Convidados Especiais" && (
+                                              <>
+                                                <tr className="border-b dark:border-neutral-500">
+                                                  <td className="whitespace-nowrap  px-6 py-4 font-medium">
+                                                    {index + 1}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4">
+                                                    {convidado.nomeConvidado}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4">
+                                                    {convidado.mesas}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4">
+                                                    {convidado.participacao}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4 text-red-500">
+                                                    {convidado.status}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
+                                                    <FaRegTrashAlt
+                                                      className="cursor-pointer"
+                                                      onClick={() =>
+                                                        handleDeleteServico(
+                                                          convidado._id
+                                                        )
+                                                      }
+                                                    />
+                                                  </td>
+                                                </tr>
+                                              </>
+                                            )}
+                                          </>
+                                        )
+                                      )}
+                                    </>
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    </div>
+                    <div className="mt-12 mb-6">
                       <p className="font-bold mt-12">Familiares da Noiva</p>
                       <hr />
                       <div className="flex flex-col">
@@ -869,52 +884,51 @@ function Convidados() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      1
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Ana Jacinto
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Anjos
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Momento
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-yellow-500">
-                                      Pendente
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-yellow-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      2
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Luis Cossa
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Querubim
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Momento
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500">
-                                      Recusado
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
+                                  {listaConvidados.length > 0 && (
+                                    <>
+                                      {listaConvidados.map(
+                                        (convidado, index) => (
+                                          <>
+                                            {convidado.grupos ===
+                                              "Familiares da Noiva" && (
+                                              <>
+                                                <tr className="border-b dark:border-neutral-500">
+                                                  <td className="whitespace-nowrap  px-6 py-4 font-medium">
+                                                    {index + 1}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4">
+                                                    {convidado.nomeConvidado}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4">
+                                                    {convidado.mesas}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4">
+                                                    {convidado.momento2}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4">
+                                                    {convidado.participacao}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4 text-red-500">
+                                                    {convidado.status}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
+                                                    <FaRegTrashAlt
+                                                      className="cursor-pointer"
+                                                      onClick={() =>
+                                                        handleDeleteServico(
+                                                          convidado._id
+                                                        )
+                                                      }
+                                                    />
+                                                  </td>
+                                                </tr>
+                                              </>
+                                            )}
+                                          </>
+                                        )
+                                      )}
+                                    </>
+                                  )}
                                 </tbody>
                               </table>
                             </div>
@@ -952,52 +966,51 @@ function Convidados() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      1
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Ana Jacinto
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Anjos
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Momento
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-yellow-500">
-                                      Pendente
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      2
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Luis Cossa
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Querubim
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Momento
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500">
-                                      Recusado
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
+                                  {listaConvidados.length > 0 && (
+                                    <>
+                                      {listaConvidados.map(
+                                        (convidado, index) => (
+                                          <>
+                                            {convidado.grupos ===
+                                              "Familiares do Noivo" && (
+                                              <>
+                                                <tr className="border-b dark:border-neutral-500">
+                                                  <td className="whitespace-nowrap  px-6 py-4 font-medium">
+                                                    {index + 1}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4">
+                                                    {convidado.nomeConvidado}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4">
+                                                    {convidado.mesas}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4">
+                                                    {convidado.momento2}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4">
+                                                    {convidado.participacao}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4 text-red-500">
+                                                    {convidado.status}
+                                                  </td>
+                                                  <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
+                                                    <FaRegTrashAlt
+                                                      className="cursor-pointer"
+                                                      onClick={() =>
+                                                        handleDeleteServico(
+                                                          convidado._id
+                                                        )
+                                                      }
+                                                    />
+                                                  </td>
+                                                </tr>
+                                              </>
+                                            )}
+                                          </>
+                                        )
+                                      )}
+                                    </>
+                                  )}
                                 </tbody>
                               </table>
                             </div>
@@ -1035,52 +1048,55 @@ function Convidados() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      1
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Ana Jacinto
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Anjos
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Momento
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-yellow-500">
-                                      Pendente
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
-                                  <tr className="border-b dark:border-neutral-500">
-                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                                      2
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Luis Cossa
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Querubim
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Momento
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4">
-                                      Presencial
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500">
-                                      Recusado
-                                    </td>
-                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
-                                      ...
-                                    </td>
-                                  </tr>
+                                  {listaConvidados.length > 0 && (
+                                    <>
+                                      {listaConvidados.map(
+                                        (convidado, index) => (
+                                          <>
+                                            {convidado.grupos !=
+                                              "Familiares do Noivo" &&
+                                              convidado.grupos !=
+                                                "Familiares da Noiva" &&
+                                              convidado.grupos !=
+                                                "Convidados Especiais" && (
+                                                <>
+                                                  <tr className="border-b dark:border-neutral-500">
+                                                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
+                                                      {index + 1}
+                                                    </td>
+                                                    <td className="whitespace-nowrap  px-6 py-4">
+                                                      {convidado.nomeConvidado}
+                                                    </td>
+                                                    <td className="whitespace-nowrap  px-6 py-4">
+                                                      {convidado.mesas}
+                                                    </td>
+                                                    <td className="whitespace-nowrap  px-6 py-4">
+                                                      {convidado.momento2}
+                                                    </td>
+                                                    <td className="whitespace-nowrap  px-6 py-4">
+                                                      {convidado.participacao}
+                                                    </td>
+                                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500">
+                                                      {convidado.status}
+                                                    </td>
+                                                    <td className="whitespace-nowrap  px-6 py-4 text-red-500 cursor-pointer">
+                                                      <FaRegTrashAlt
+                                                        className="cursor-pointer"
+                                                        onClick={() =>
+                                                          handleDeleteServico(
+                                                            convidado._id
+                                                          )
+                                                        }
+                                                      />
+                                                    </td>
+                                                  </tr>
+                                                </>
+                                              )}
+                                          </>
+                                        )
+                                      )}
+                                    </>
+                                  )}
                                 </tbody>
                               </table>
                             </div>

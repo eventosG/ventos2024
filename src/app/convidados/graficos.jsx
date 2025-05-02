@@ -1,11 +1,21 @@
 "use client";
 import React from "react";
 import dynamic from "next/dynamic";
+import { parse } from "path";
 const TEChart = dynamic(() =>
   import("tw-elements-react").then((res) => res.TEChart)
 );
 
-export default function Graficos() {
+export default function Graficos({
+  convidadosConfirmados,
+  convidadosPendentes,
+  convidadosCancelados,
+  convidadosRecusados,
+}) {
+  const cancelados = parseInt(convidadosCancelados);
+  const confirmados = parseInt(convidadosConfirmados);
+  const pendentes = parseInt(convidadosPendentes);
+  const recusados = parseInt(convidadosRecusados);
   return (
     <>
       <TEChart
@@ -15,7 +25,7 @@ export default function Graficos() {
           datasets: [
             {
               label: "Traffic",
-              data: [2112, 2343, 2545, 3423],
+              data: [confirmados, pendentes, cancelados, recusados],
               backgroundColor: [
                 "rgba(63, 81, 181, 0.5)",
                 "rgba(77, 182, 172, 0.5)",

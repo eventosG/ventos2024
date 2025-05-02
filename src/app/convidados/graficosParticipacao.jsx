@@ -5,7 +5,9 @@ const TEChart = dynamic(() =>
   import("tw-elements-react").then((res) => res.TEChart)
 );
 
-export default function GraficosParticipacao() {
+export default function GraficosParticipacao({participacaoPresencial, participacaoVirtual}) {
+  const presencial = parseInt(participacaoPresencial);
+  const virtual = parseInt(participacaoVirtual);
   return (
     <>
       <TEChart
@@ -15,7 +17,7 @@ export default function GraficosParticipacao() {
           datasets: [
             {
               label: "Traffic",
-              data: [2112, 2343],
+              data: [presencial, virtual],
               backgroundColor: [
                 "rgba(63, 81, 181, 0.5)",
                 "rgba(77, 182, 172, 0.5)",

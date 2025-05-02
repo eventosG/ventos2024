@@ -5,6 +5,7 @@ import "./globals.css";
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import dynamic from "next/dynamic";
 import Navbar from "./components/navBar/navBar";
+import { ToastContainer } from 'react-toastify';
 
 const FooterComponent = dynamic(() => import("../../pages/footer"), {
   ssr: false,
@@ -28,6 +29,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
+          <ToastContainer />
           <Navbar />
           {children}
           <FooterComponent />
