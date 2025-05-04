@@ -30,7 +30,15 @@ export const PUT = async (req, { params }) => {
 
     return new Response(JSON.stringify(updatedEvento), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        // Headers para evitar cache em todos os níveis:
+        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        // Opcional: Para APIs públicas (evita cache em CDNs/proxies)
+        'CDN-Cache-Control': 'no-store',
+        'Vercel-CDN-Cache-Control': 'no-store'
+    }
     });
   } catch (error) {
     console.error("Erro ao atualizar evento:", error);
