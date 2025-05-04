@@ -39,7 +39,9 @@ export default function Cronograma() {
     }, 5000);
   }, []);
   useEffect(() => {
-    fetch("api/eventos/get") // Rota de API local em Next.js
+    fetch("api/eventos/get", {
+      cache: "no-store",
+    }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
         data.map((evento) => {
@@ -60,7 +62,10 @@ export default function Cronograma() {
         console.error("Erro ao buscar dados:", error);
       })
       .finally(() => {});
-    fetch("api/cronograma/get") // Rota de API local em Next.js
+    fetch("api/cronograma/get", {
+      cache: "no-store",
+    }
+  ) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
         listaMomentosF = [];

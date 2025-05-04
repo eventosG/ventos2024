@@ -15,7 +15,9 @@ export const Hero = () => {
   let listaEventosVolatel = [];
   useEffect(() => {
     listaEventosVolatel = [];
-    fetch("api/eventos/get") // Rota de API local em Next.js
+    fetch("api/eventos/get", {
+      cache: "no-store",
+    }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
         data.map((evento) => {

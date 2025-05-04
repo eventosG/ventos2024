@@ -80,7 +80,9 @@ function Convidados() {
     settipoEventoSelected(localStorage.getItem("tipoEvento"));
   }, []);
   useEffect(() => {
-    fetch("api/grupos/get") // Rota de API local em Next.js
+    fetch("api/grupos/get", {
+      cache: "no-store",
+    }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
         listaGrupos = [];
@@ -99,7 +101,9 @@ function Convidados() {
       .finally(() => {
         setListaGruposF(listaGrupos);
       });
-    fetch("api/mesa/get") // Rota de API local em Next.js
+    fetch("api/mesa/get", {
+      cache: "no-store",
+    }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
         listaMesas = [];
@@ -118,7 +122,9 @@ function Convidados() {
       .finally(() => {
         setListaMesasF(listaMesas);
       });
-    fetch("api/convidados/get") // Rota de API local em Next.js
+    fetch("api/convidados/get", {
+      cache: "no-store",
+    }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
         listaConvidadosF = [];
@@ -157,7 +163,9 @@ function Convidados() {
         setParticipacaoPresencial(participacaoPresencialV);
       });
 
-    fetch("api/eventos/get") // Rota de API local em Next.js
+    fetch("api/eventos/get", {
+      cache: "no-store",
+    }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
         data.map((evento) => {

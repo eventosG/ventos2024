@@ -824,7 +824,9 @@ export default function Planificacao() {
     setTotalOrcamento(totSeleccionado + totMinimo);
   }, [listaServiçosSelcion]);
   useEffect(() => {
-    fetch("api/servicosSelecionados/get") // Rota de API local em Next.js
+    fetch("api/servicosSelecionados/get", {
+      cache: "no-store",
+    }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
         listaProdutosSelecionadosVolatel = [];
@@ -848,7 +850,9 @@ export default function Planificacao() {
       });
   }, [user?.fullName, user?.primaryEmailAddress?.emailAddress, actualizar]);
   useEffect(() => {
-    fetch("api/eventos/get") // Rota de API local em Next.js
+    fetch("api/eventos/get", {
+      cache: "no-store",
+    }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
         listaEventosVolatel = [];
@@ -872,7 +876,9 @@ export default function Planificacao() {
         setListaEvento(listaEventosVolatel);
       });
 
-    fetch("api/roadMap/get") // Rota de API local em Next.js
+    fetch("api/roadMap/get", {
+      cache: "no-store",
+    }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
         listaRoadMapVolatel = [];
