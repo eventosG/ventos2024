@@ -825,7 +825,13 @@ export default function Planificacao() {
   }, [listaServiçosSelcion]);
   useEffect(() => {
     fetch("api/servicosSelecionados/get", {
-      cache: "no-store",
+      cache: "no-store", // Isso já evita cache no navegador e no Vercel
+      headers: {
+        // Adicione headers extras para garantir que não haja cache
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
@@ -851,7 +857,13 @@ export default function Planificacao() {
   }, [user?.fullName, user?.primaryEmailAddress?.emailAddress, actualizar]);
   useEffect(() => {
     fetch("api/eventos/get", {
-      cache: "no-store",
+      cache: "no-store", // Isso já evita cache no navegador e no Vercel
+      headers: {
+        // Adicione headers extras para garantir que não haja cache
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
@@ -877,7 +889,13 @@ export default function Planificacao() {
       });
 
     fetch("api/roadMap/get", {
-      cache: "no-store",
+      cache: "no-store", // Isso já evita cache no navegador e no Vercel
+      headers: {
+        // Adicione headers extras para garantir que não haja cache
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {

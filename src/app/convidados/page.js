@@ -81,7 +81,13 @@ function Convidados() {
   }, []);
   useEffect(() => {
     fetch("api/grupos/get", {
-      cache: "no-store",
+      cache: "no-store", // Isso já evita cache no navegador e no Vercel
+      headers: {
+        // Adicione headers extras para garantir que não haja cache
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
@@ -102,7 +108,13 @@ function Convidados() {
         setListaGruposF(listaGrupos);
       });
     fetch("api/mesa/get", {
-      cache: "no-store",
+      cache: "no-store", // Isso já evita cache no navegador e no Vercel
+      headers: {
+        // Adicione headers extras para garantir que não haja cache
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
@@ -123,7 +135,13 @@ function Convidados() {
         setListaMesasF(listaMesas);
       });
     fetch("api/convidados/get", {
-      cache: "no-store",
+      cache: "no-store", // Isso já evita cache no navegador e no Vercel
+      headers: {
+        // Adicione headers extras para garantir que não haja cache
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
@@ -164,7 +182,13 @@ function Convidados() {
       });
 
     fetch("api/eventos/get", {
-      cache: "no-store",
+      cache: "no-store", // Isso já evita cache no navegador e no Vercel
+      headers: {
+        // Adicione headers extras para garantir que não haja cache
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     }) // Rota de API local em Next.js
       .then((res) => res.json())
       .then((data) => {
