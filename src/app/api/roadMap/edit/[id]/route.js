@@ -2,6 +2,10 @@ import { connectToDB } from "../../../../../../utils/database";
 import RoadMap from "../../../../../../models/roadMap";
 import { ObjectId } from "mongodb";
 
+// Configurações dinâmicas para desativar cache (Next.js 14+)
+export const dynamic = 'force-dynamic'; // ✅ Garante que a rota seja sempre dinâmica
+export const revalidate = 0; // ✅ Equivalente a 'no-store'
+
 export const PUT = async (req, { params }) => {
   try {
     const updateData = await req.json(); // Recebe os dados a atualizar

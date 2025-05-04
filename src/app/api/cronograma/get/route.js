@@ -1,6 +1,10 @@
 import { connectToDB } from "../../../../../utils/database";
 import Cronograma from "../../../../../models/cronograma";
 
+// Configurações dinâmicas para desativar cache (Next.js 14+)
+export const dynamic = 'force-dynamic'; // ✅ Garante que a rota seja sempre dinâmica
+export const revalidate = 0; // ✅ Equivalente a 'no-store'
+
 export const GET = async () => {
   try {
     await connectToDB();
